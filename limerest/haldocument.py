@@ -31,6 +31,9 @@ class HalDocument:
     def has_embedded(self, url):
         return '_embedded' in self.hal and url in self.hal['_embedded']
 
+    def has_link(self, linkname):
+        return '_links' in self.hal and linkname in self.hal['_links']
+
     def _get_resource(self, link, resource_type):
         url = link['href']
         if self.has_embedded(url):

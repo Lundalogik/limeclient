@@ -16,10 +16,11 @@ class RestClientError(Exception):
         )
 
 class RestClient:
-    def __init__(self, host, database):
+    def __init__(self, host, database, debug=False):
         self.host = host
         self.session = None
         self.database = database
+        self.debug = debug
 
     def login(self, user=None, password=None):
 
@@ -86,16 +87,17 @@ class RestClient:
 
         kwargs['headers'] = headers
 
-        if 'data' in kwargs:
+        if self.debug and 'data' in kwargs:
             print('===================================')
             print('REQUEST ({} {}):'.format(method, url))
             print(kwargs['data'])
 
         r = requests.request(method, url, **kwargs)
 
-        print('===================================')
-        print('RESPONSE ({} {}):'.format(method, url))
-        print(r.text)
+        if self.debug:
+            print('===================================')
+            print('RESPONSE ({} {}):'.format(method, url))
+            print(r.text)
 
         return r
 

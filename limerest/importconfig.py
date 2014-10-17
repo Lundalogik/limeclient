@@ -92,7 +92,7 @@ class OptionFieldMapping(collections.UserDict):
                 else None)
 
     def _set_mapping(self, column_val, field_val):
-        self['settings']['mapping'][column_val] = field_val
+        self['settings']['mapping'][column_val] = {'key': field_val}
 
 
 class RelationMapping(collections.UserDict):

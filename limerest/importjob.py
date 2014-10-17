@@ -43,6 +43,10 @@ class ImportJob(HalDocument):
     def errors(self):
         return self.linked_resource('errors', ImportJobErrors)
 
+    @property
+    def has_errors(self):
+        return self.has_link('errors')
+
 class ImportJobErrors(HalDocument):
     def __init__(self, hal, rest_client):
         # Fix: /importjobs/x/errors/ returns a naked array instead of HAL
