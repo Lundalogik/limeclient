@@ -2,6 +2,7 @@ from .haldocument import HalDocument
 from urllib.parse import urlparse
 import http.client
 import json
+from .restclient import RestClientError
 
 class Entities:
     def __init__(self, rest_client):
@@ -14,7 +15,7 @@ class Entities:
 
         r = self.rest_client.get(url)
         if r.status_code != http.client.OK:
-            raise RestClientError('Failed to get entity {}'.format(name),
+            raise RestClientError('Failed to get entity {}'.format(url),
                                   r.status_code, r.text)
         return Entity(json.loads(r.text), self.rest_client)
 

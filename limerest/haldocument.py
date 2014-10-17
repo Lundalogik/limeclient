@@ -1,5 +1,6 @@
 import http.client
 import json
+from .restclient import RestClientError
 
 class HalDocument:
     def __init__(self, hal, rest_client):

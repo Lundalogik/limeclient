@@ -1,6 +1,7 @@
 from .haldocument import HalDocument
 import json
 import http.client
+from .restclient import RestClientError
 
 class ImportFileHeaders(HalDocument):
     def __init__(self, hal, rest_client):

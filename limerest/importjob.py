@@ -1,6 +1,7 @@
 from .haldocument import HalDocument
 import json
 import http.client
+from .restclient import RestClientError
 
 EMPTY_HAL = {"_links": {}}
 class ImportJobs:

@@ -2,6 +2,7 @@ import collections
 from .haldocument import HalDocument
 import http.client
 import json
+from .restclient import RestClientError
 
 class ImportConfigs:
     def __init__(self, rest_client):
