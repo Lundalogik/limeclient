@@ -22,7 +22,8 @@ def main():
     args = parse_args()
 
     client = RestClient(host='http://localhost:5000',
-                        database='lime_basic_v4_1')
+                        database='lime_basic_v4_1',
+                        debug=False)
 
     with client.login(user=args.user, password=args.password) as c:
         print('Uploading file...')
