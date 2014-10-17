@@ -36,11 +36,11 @@ class ImportConfig(HalDocument):
     def importfile(self, val):
         self.add_linked_resource('importfile', val)
 
-    def add_field_mapping(self, mapping):
-        self.field_mappings[mapping.field_url] = mapping.data
-
-    def add_relation_mapping(self, mapping):
-        self.relation_mappings[mapping.relation_url] = mapping.data
+    def add_mapping(self, mapping):
+        if type(mapping) == RelationMapping:
+            self.relation_mappings[mapping.relation_url] = mapping.data
+        else:
+            self.field_mappings[mapping.field_url] = mapping.data
 
     def save(self):
         if '_embedded' in self.hal:

@@ -43,13 +43,13 @@ def main():
         email = SimpleFieldMapping(field=person.fields['email'],
                                    column='email',
                                    key=True)
-        config.add_field_mapping(email)
+        config.add_mapping(email)
 
         print('Adding simple mapping for first name...')
         firstname = SimpleFieldMapping(field=person.fields['firstname'],
                                        column='first name',
                                        key=False)
-        config.add_field_mapping(firstname)
+        config.add_mapping(firstname)
 
         print('Adding option mapping for position...')
         field = person.fields['position']
@@ -57,14 +57,14 @@ def main():
         position.default = field.option_id_for('VD')
         position.map_value(column_val='IT',
                            field_val=field.option_id_for('IT-chef'))
-        config.add_field_mapping(position)
+        config.add_mapping(position)
 
         print('Adding a relation to company...')
         relation = person.relations['company']
         company = relation.related
         relation_mapping = RelationMapping(column='company', relation=relation,
                                            key_field=company.fields['name'])
-        config.add_relation_mapping(relation_mapping)
+        config.add_mapping(relation_mapping)
 
         print('Saving configuration...')
         config.save()
