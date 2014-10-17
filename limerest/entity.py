@@ -29,15 +29,32 @@ class Entity(HalDocument):
 
     @property
     def fields(self):
-        return {f.name: f for f in self.linked_resource('fields', Field)}
+        return {f.name: f for f in self.linked_resource('fields',
+                                                        create_field)}
 
     @property
     def relations(self):
         return {r.name: r for r in self.linked_resource('relations', Relation)}
 
-class Field(HalDocument):
+
+class SimpleField(HalDocument):
     def __init__(self, hal, rest_client):
         super().__init__(hal, rest_client)
+
+class OptionField(HalDocument):
+    def __init__(self, hal, rest_client):
+        super().__init__(hal, rest_client)
+
+    def option_id_for(self, localname):
+        return next(o['id'] for o in self.options
+                    if o['localname'] == localname)
+
+def create_field(hal, rest_client):
+    types = {
+        'option': OptionField
+    }
+    ctor = types.get(hal['type'], SimpleField)
+    return ctor(hal, rest_client)
 
 
 class Relation(HalDocument):

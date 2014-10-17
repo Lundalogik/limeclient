@@ -45,10 +45,11 @@ def main():
                                        key=False)
         config.add_field_mapping(firstname)
 
-        position = OptionFieldMapping(field=person.fields['position'],
-                                      column='title')
-        position.default = 'ceo'
-        position.map_value(column_val='IT', field_val='supersupport')
+        field = person.fields['position']
+        position = OptionFieldMapping(field=field, column='title')
+        position.default = field.option_id_for('VD')
+        position.map_value(column_val='IT',
+                           field_val=field.option_id_for('IT-chef'))
         config.add_field_mapping(position)
 
         relation = person.relations['company']
