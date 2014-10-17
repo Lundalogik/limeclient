@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import time
+import argparse
 from limerest import (RestClient,
                       SimpleFieldMapping,
                       OptionFieldMapping,
@@ -11,11 +12,19 @@ from limerest import (RestClient,
                       ImportFiles)
 
 
-def main():
-    client = RestClient(host='http://localhost:5000',
-                        database='my_db')
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument('--user', required=True)
+    p.add_argument('--password', required=True)
+    return p.parse_args()
 
-    with client.login(user='admin', password='') as c:
+def main():
+    args = parse_args()
+
+    client = RestClient(host='http://localhost:5000',
+                        database='lime_basic_v4_1')
+
+    with client.login(user=args.user, password=args.password) as c:
         f = ImportFiles(c).create('import_person.txt')
         f.delimiter = ';'
         f.save()
@@ -26,19 +35,21 @@ def main():
         config.entity = person
         config.importfile = f
 
-        email_mapping = SimpleFieldMapping(column='email', key=True)
-        config.add_field_mapping(field=person.fields['email'],
-                                 mapping=email_mapping)
+        email = SimpleFieldMapping(field=person.fields['email'],
+                                   column='email',
+                                   key=True)
+        config.add_field_mapping(email)
 
-        firstname_mapping = SimpleFieldMapping(column='firstname', key=False)
-        config.add_field_mapping(field=person.fields['firstname'],
-                                 mapping=email_mapping)
+        firstname = SimpleFieldMapping(field=person.fields['firstname'],
+                                       column='first name',
+                                       key=False)
+        config.add_field_mapping(firstname)
 
-        position_mapping = OptionFieldMapping(column='title')
-        position_mapping.default = 'ceo'
-        position_mapping.map_value(column_val='IT', field_val='supersupport')
-        config.add_field_mapping(field=person.fields['position'],
-                                 mapping=position_mapping)
+        position = OptionFieldMapping(field=person.fields['position'],
+                                      column='title')
+        position.default = 'ceo'
+        position.map_value(column_val='IT', field_val='supersupport')
+        config.add_field_mapping(position)
 
         relation = person.relations['company']
         company = relation.related

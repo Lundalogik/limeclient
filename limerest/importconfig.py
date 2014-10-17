@@ -36,8 +36,8 @@ class ImportConfig(HalDocument):
     def importfile(self, val):
         self.add_linked_resource('importfile', val)
 
-    def add_field_mapping(self, field, mapping):
-        self.field_mappings[field.self_url] = mapping
+    def add_field_mapping(self, mapping):
+        self.field_mappings[mapping.field_url] = mapping.data
 
     def add_relation_mapping(self, mapping):
         self.relation_mappings[mapping.relation_url] = mapping.data
@@ -48,18 +48,32 @@ class ImportConfig(HalDocument):
         self.rest_client.put(self.self_url, data=json.dumps(self.hal))
 
 
-class SimpleFieldMapping(dict):
-    def __init__(self, column, key=False):
-        self['column'] = column
-        self['key'] = key
-
-
-class OptionFieldMapping(dict):
-    def __init__(self, column):
-        self['column'] = column
-        self['settings'] = {
-            'mapping': {}
+class SimpleFieldMapping(collections.UserDict):
+    def __init__(self, column, field, key=False):
+        self._field = field
+        self.data = {
+            'column': column,
+            'key': key
         }
+
+    @property
+    def field_url(self):
+        return self._field.self_url
+
+
+class OptionFieldMapping(collections.UserDict):
+    def __init__(self, column, field):
+        self._field = field
+        self.data = {
+            'column': column,
+            'settings': {
+                'mapping': {}
+            }
+        }
+
+    @property
+    def field_url(self):
+        return self._field.self_url
 
     @property
     def default(self):
