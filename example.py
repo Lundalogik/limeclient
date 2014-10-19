@@ -2,7 +2,7 @@
 import sys
 import time
 import argparse
-from limerest import (RestClient,
+from limerest import (LimeClient,
                       SimpleFieldMapping,
                       OptionFieldMapping,
                       RelationMapping,
@@ -21,7 +21,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    client = RestClient(host='http://localhost:5000',
+    client = LimeClient(host='http://localhost:5000',
                         database='lime_basic_v4_1',
                         debug=False)
 

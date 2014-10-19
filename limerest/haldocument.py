@@ -1,6 +1,6 @@
 import http.client
 import json
-from .restclient import RestClientError
+from .limeclient import LimeClientError
 
 
 class HalDocument:
@@ -48,7 +48,7 @@ class HalDocument:
     def _load_resource(self, url, resource_type):
         r = self.rest_client.get(url)
         if r.status_code != http.client.OK:
-            raise RestClientError('Failed to get linked resource',
+            raise LimeClientError('Failed to get linked resource',
                                   r.status_code,
                                   r.text)
 

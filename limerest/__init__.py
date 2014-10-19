@@ -1,4 +1,4 @@
-from .restclient import RestClient
+from .limeclient import LimeClient
 from .importconfig import (ImportConfigs,
                            SimpleFieldMapping,
                            OptionFieldMapping,
@@ -8,5 +8,5 @@ from .importfile import ImportFiles
 
 from .importjob import ImportJobs
 
-__all__ = [RestClient, ImportConfigs, SimpleFieldMapping, OptionFieldMapping,
+__all__ = [LimeClient, ImportConfigs, SimpleFieldMapping, OptionFieldMapping,
            RelationMapping, EntityTypes, ImportFiles, ImportJobs]

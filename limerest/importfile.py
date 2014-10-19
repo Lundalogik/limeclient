@@ -1,7 +1,7 @@
 from .haldocument import HalDocument
 import json
 import http.client
-from .restclient import RestClientError
+from .limeclient import LimeClientError
 
 class ImportFileHeaders(HalDocument):
     def __init__(self, hal, rest_client):
@@ -16,7 +16,7 @@ class ImportFiles:
         files = {'file': (filename, open(filename, 'r'))}
         r = self.rest_client.post('/importfiles/', files=files)
         if r.status_code != http.client.CREATED:
-            raise RestClientError('Failed to create import file', r.status_code,
+            raise LimeClientError('Failed to create import file', r.status_code,
                                   r.text)
         return ImportFile(json.loads(r.text), self.rest_client)
 

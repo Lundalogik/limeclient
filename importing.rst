@@ -36,13 +36,13 @@ TBD
 AUTHENTICATING
 --------------
 First of all, we need to authenticate ourselves with the LIME Pro server.
-If we're using the API-client this done by creating an instance of RestClient
+If we're using the API-client this done by creating an instance of LimeClient
 and logging in:
 
 .. code-block:: python
     from limerest
 
-     client = RestClient('http://localhost:2134', 'my_database')
+     client = LimeClient('http://localhost:2134', 'my_database')
 
      with client.login('user', 'pass') as c:
          # Do stuff here...

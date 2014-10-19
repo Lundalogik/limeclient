@@ -2,7 +2,7 @@ import collections
 from .haldocument import HalDocument
 import http.client
 import json
-from .restclient import RestClientError
+from .limeclient import LimeClientError
 
 class ImportConfigs:
     def __init__(self, rest_client):
@@ -12,7 +12,7 @@ class ImportConfigs:
         url = '/importconfigs/'
         r = self.rest_client.post(url)
         if r.status_code != http.client.CREATED:
-            raise RestClientError('Failed to create import config',
+            raise LimeClientError('Failed to create import config',
                                   r.status_code, r.text)
         return ImportConfig(json.loads(r.text), self.rest_client)
 

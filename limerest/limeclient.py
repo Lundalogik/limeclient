@@ -4,7 +4,7 @@ import requests
 import http.client
 
 
-class RestClientError(Exception):
+class LimeClientError(Exception):
     def __init__(self, message, status_code, details):
         self.message = message
         self.status_code = status_code
@@ -15,7 +15,7 @@ class RestClientError(Exception):
             self.message, self.status_code, self.details
         )
 
-class RestClient:
+class LimeClient:
     def __init__(self, host, database, debug=False):
         self.host = host
         self.session = None
@@ -33,7 +33,7 @@ class RestClient:
 
         r = self.request('POST', self._sessions_url(), data=data)
         if r.status_code != http.client.CREATED:
-            raise RestClientError('Failed to login!', r.status_code, r.text)
+            raise LimeClientError('Failed to login!', r.status_code, r.text)
 
         self.session = json.loads(r.text)
         return self
@@ -41,7 +41,7 @@ class RestClient:
     def logout(self):
         r = self.request('DELETE', self._sessions_url())
         if r.status_code != http.client.NO_CONTENT:
-            raise RestClientError('Failed to logout!', r.status_code, r.text)
+            raise LimeClientError('Failed to logout!', r.status_code, r.text)
 
         self.session = None
 

@@ -1,7 +1,7 @@
 from .haldocument import HalDocument
 import json
 import http.client
-from .restclient import RestClientError
+from .limeclient import LimeClientError
 
 EMPTY_HAL = {"_links": {}}
 class ImportJobs:
@@ -14,14 +14,14 @@ class ImportJobs:
 
         r = self.rest_client.post(url, data=json.dumps(job.hal))
         if r.status_code != http.client.CREATED:
-            raise RestClientError('Failed to create import job',
+            raise LimeClientError('Failed to create import job',
                                   r.status_code, r.text)
         return ImportJob(json.loads(r.text), self.rest_client)
 
     def get(self, url):
         r = self.rest_client.get(url)
         if r.status_code != http.client.OK:
-            raise RestClientError('Failed to fetch import job',
+            raise LimeClientError('Failed to fetch import job',
                                   r.status_code, r.text)
         return ImportJob(json.loads(r.text), self.rest_client)
 
