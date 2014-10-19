@@ -8,7 +8,7 @@ from limerest import (RestClient,
                       RelationMapping,
                       ImportConfigs,
                       ImportJobs,
-                      Entities,
+                      EntityTypes,
                       ImportFiles)
 
 
@@ -32,7 +32,7 @@ def main():
         f.save()
 
         print('Getting person entity type info...')
-        person = Entities(c).get_by_name('person')
+        person = EntityTypes(c).get_by_name('person')
 
         print('Creating import config...')
         config = ImportConfigs(c).create()

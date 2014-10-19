@@ -84,7 +84,7 @@ to load the 'person' entity type:
         f.delimiter(',')
         f.save()
 
-        person = Entities(c).get_by_name('person')
+        person = EntityTypes(c).get_by_name('person')
 
 CREATING AN IMPORT CONFIGURATION
 --------------------------------
@@ -96,7 +96,7 @@ With that we have enough information to start configuring our import:
         f.delimiter(',')
         f.save()
 
-        person = Entities(c).get_by_name('person')
+        person = EntityTypes(c).get_by_name('person')
 
         [TO BE IMPLEMENTED]
         config = ImportConfigs(c).create(entity=person, importfile=f)
@@ -139,7 +139,7 @@ person, we can add a SimpleFieldMapping to our new config:
     with client.login('user', 'pass') as c:
         # ...
 
-        person = Entities(c).get_by_name('person')
+        person = EntityTypes(c).get_by_name('person')
 
         config = ImportConfigs(c).create(entity=person, importfile=f)
 

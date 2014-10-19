@@ -4,7 +4,8 @@ import http.client
 import json
 from .restclient import RestClientError
 
-class Entities:
+
+class EntityTypes:
     def __init__(self, rest_client):
         self.rest_client = rest_client
 
@@ -15,15 +16,16 @@ class Entities:
 
         r = self.rest_client.get(url)
         if r.status_code != http.client.OK:
-            raise RestClientError('Failed to get entity {}'.format(url),
+            raise RestClientError('Failed to get entity type {}'.format(url),
                                   r.status_code, r.text)
-        return Entity(json.loads(r.text), self.rest_client)
+        return EntityType(json.loads(r.text), self.rest_client)
 
     def get_by_name(self, name):
         url = '/metadata/entities/{}/?_embed=all'.format(name)
         return self.get_by_url(url)
 
-class Entity(HalDocument):
+
+class EntityType(HalDocument):
     def __init__(self, hal, rest_client):
         super().__init__(hal, rest_client)
 
@@ -41,6 +43,7 @@ class SimpleField(HalDocument):
     def __init__(self, hal, rest_client):
         super().__init__(hal, rest_client)
 
+
 class OptionField(HalDocument):
     def __init__(self, hal, rest_client):
         super().__init__(hal, rest_client)
@@ -48,6 +51,7 @@ class OptionField(HalDocument):
     def option_id_for(self, localname):
         return next(o['id'] for o in self.options
                     if o['localname'] == localname)
+
 
 def create_field(hal, rest_client):
     types = {
@@ -64,5 +68,4 @@ class Relation(HalDocument):
     @property
     def related(self):
         # Should really be stored in '_links'
-        return Entities(self.rest_client).get_by_url(self.related_entity)
-
+        return EntityTypes(self.rest_client).get_by_url(self.related_entity)

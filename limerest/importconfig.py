@@ -22,7 +22,7 @@ class ImportConfig(HalDocument):
 
     @property
     def entity(self):
-        return self.linked_resource('entity', Entity)
+        return self.linked_resource('entity', EntityType)
 
     @entity.setter
     def entity(self, val):
