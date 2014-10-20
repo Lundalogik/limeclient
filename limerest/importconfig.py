@@ -5,20 +5,20 @@ import json
 from .limeclient import LimeClientError
 
 class ImportConfigs:
-    def __init__(self, rest_client):
-        self.rest_client = rest_client
+    def __init__(self, lime_client):
+        self.lime_client = lime_client
 
     def create(self):
         url = '/importconfigs/'
-        r = self.rest_client.post(url)
+        r = self.lime_client.post(url)
         if r.status_code != http.client.CREATED:
             raise LimeClientError('Failed to create import config',
                                   r.status_code, r.text)
-        return ImportConfig(json.loads(r.text), self.rest_client)
+        return ImportConfig(json.loads(r.text), self.lime_client)
 
 class ImportConfig(HalDocument):
-    def __init__(self, hal, rest_client):
-        super().__init__(hal, rest_client)
+    def __init__(self, hal, lime_client):
+        super().__init__(hal, lime_client)
 
     @property
     def entity(self):
@@ -45,7 +45,7 @@ class ImportConfig(HalDocument):
     def save(self):
         if '_embedded' in self.hal:
             del self.hal['_embedded']
-        self.rest_client.put(self.self_url, data=json.dumps(self.hal))
+        self.lime_client.put(self.self_url, data=json.dumps(self.hal))
 
 
 class SimpleFieldMapping(collections.UserDict):

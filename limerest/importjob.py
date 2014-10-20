@@ -5,39 +5,39 @@ from .limeclient import LimeClientError
 
 EMPTY_HAL = {"_links": {}}
 class ImportJobs:
-    def __init__(self, rest_client):
-        self.rest_client = rest_client
+    def __init__(self, lime_client):
+        self.lime_client = lime_client
 
     def create(self, import_config):
         url = '/importjobs/'
-        job = ImportJob.create(import_config, self.rest_client)
+        job = ImportJob.create(import_config, self.lime_client)
 
-        r = self.rest_client.post(url, data=json.dumps(job.hal))
+        r = self.lime_client.post(url, data=json.dumps(job.hal))
         if r.status_code != http.client.CREATED:
             raise LimeClientError('Failed to create import job',
                                   r.status_code, r.text)
-        return ImportJob(json.loads(r.text), self.rest_client)
+        return ImportJob(json.loads(r.text), self.lime_client)
 
     def get(self, url):
-        r = self.rest_client.get(url)
+        r = self.lime_client.get(url)
         if r.status_code != http.client.OK:
             raise LimeClientError('Failed to fetch import job',
                                   r.status_code, r.text)
-        return ImportJob(json.loads(r.text), self.rest_client)
+        return ImportJob(json.loads(r.text), self.lime_client)
 
 
 class ImportJob(HalDocument):
-    def __init__(self, hal, rest_client):
-        super().__init__(hal, rest_client)
+    def __init__(self, hal, lime_client):
+        super().__init__(hal, lime_client)
 
     @staticmethod
-    def create(config, rest_client):
-        job = ImportJob(EMPTY_HAL, rest_client)
+    def create(config, lime_client):
+        job = ImportJob(EMPTY_HAL, lime_client)
         job.add_linked_resource('importconfig', config)
         return job
 
     def refresh(self):
-        return ImportJobs(self.rest_client).get(self.self_url)
+        return ImportJobs(self.lime_client).get(self.self_url)
 
     @property
     def errors(self):
@@ -48,8 +48,8 @@ class ImportJob(HalDocument):
         return self.has_link('errors')
 
 class ImportJobErrors(HalDocument):
-    def __init__(self, hal, rest_client):
+    def __init__(self, hal, lime_client):
         # Fix: /importjobs/x/errors/ returns a naked array instead of HAL
         hal = {"errors": hal}
-        super().__init__(hal, rest_client)
+        super().__init__(hal, lime_client)
 

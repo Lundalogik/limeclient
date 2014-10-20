@@ -4,9 +4,9 @@ from .limeclient import LimeClientError
 
 
 class HalDocument:
-    def __init__(self, hal, rest_client):
+    def __init__(self, hal, lime_client):
         self.hal = hal
-        self.rest_client = rest_client
+        self.lime_client = lime_client
         self._setup_properties()
 
     @property
@@ -41,12 +41,12 @@ class HalDocument:
     def _get_resource(self, link, resource_type):
         url = link['href']
         if self.has_embedded(url):
-            return resource_type(self.hal['_embedded'][url], self.rest_client)
+            return resource_type(self.hal['_embedded'][url], self.lime_client)
 
         return self._load_resource(url, resource_type)
 
     def _load_resource(self, url, resource_type):
-        r = self.rest_client.get(url)
+        r = self.lime_client.get(url)
         if r.status_code != http.client.OK:
             raise LimeClientError('Failed to get linked resource',
                                   r.status_code,
@@ -54,7 +54,7 @@ class HalDocument:
 
         res = json.loads(r.text)
 
-        return resource_type(res, self.rest_client)
+        return resource_type(res, self.lime_client)
 
     def _setup_properties(self):
         def getter(name):

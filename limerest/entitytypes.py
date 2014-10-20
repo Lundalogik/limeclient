@@ -6,19 +6,19 @@ from .limeclient import LimeClientError
 
 
 class EntityTypes:
-    def __init__(self, rest_client):
-        self.rest_client = rest_client
+    def __init__(self, lime_client):
+        self.lime_client = lime_client
 
     def get_by_url(self, url):
         parsed = urlparse(url)
         if not parsed.query:
             url += '?_embed=all'
 
-        r = self.rest_client.get(url)
+        r = self.lime_client.get(url)
         if r.status_code != http.client.OK:
             raise LimeClientError('Failed to get entity type {}'.format(url),
                                   r.status_code, r.text)
-        return EntityType(json.loads(r.text), self.rest_client)
+        return EntityType(json.loads(r.text), self.lime_client)
 
     def get_by_name(self, name):
         url = '/metadata/entities/{}/?_embed=all'.format(name)
@@ -26,8 +26,8 @@ class EntityTypes:
 
 
 class EntityType(HalDocument):
-    def __init__(self, hal, rest_client):
-        super().__init__(hal, rest_client)
+    def __init__(self, hal, lime_client):
+        super().__init__(hal, lime_client)
 
     @property
     def fields(self):
@@ -40,32 +40,32 @@ class EntityType(HalDocument):
 
 
 class SimpleField(HalDocument):
-    def __init__(self, hal, rest_client):
-        super().__init__(hal, rest_client)
+    def __init__(self, hal, lime_client):
+        super().__init__(hal, lime_client)
 
 
 class OptionField(HalDocument):
-    def __init__(self, hal, rest_client):
-        super().__init__(hal, rest_client)
+    def __init__(self, hal, lime_client):
+        super().__init__(hal, lime_client)
 
     def option_id_for(self, localname):
         return next(o['id'] for o in self.options
                     if o['localname'] == localname)
 
 
-def create_field(hal, rest_client):
+def create_field(hal, lime_client):
     types = {
         'option': OptionField
     }
     ctor = types.get(hal['type'], SimpleField)
-    return ctor(hal, rest_client)
+    return ctor(hal, lime_client)
 
 
 class Relation(HalDocument):
-    def __init__(self, hal, rest_client):
-        super().__init__(hal, rest_client)
+    def __init__(self, hal, lime_client):
+        super().__init__(hal, lime_client)
 
     @property
     def related(self):
         # Should really be stored in '_links'
-        return EntityTypes(self.rest_client).get_by_url(self.related_entity)
+        return EntityTypes(self.lime_client).get_by_url(self.related_entity)
