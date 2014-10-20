@@ -2,14 +2,14 @@
 import sys
 import time
 import argparse
-from limerest import (LimeClient,
-                      SimpleFieldMapping,
-                      OptionFieldMapping,
-                      RelationMapping,
-                      ImportConfigs,
-                      ImportJobs,
-                      EntityTypes,
-                      ImportFiles)
+from limeclient import (LimeClient,
+                        SimpleFieldMapping,
+                        OptionFieldMapping,
+                        RelationMapping,
+                        ImportConfigs,
+                        ImportJobs,
+                        EntityTypes,
+                        ImportFiles)
 
 
 def parse_args():
