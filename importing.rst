@@ -109,8 +109,6 @@ With that we have enough information to start configuring our import:
 
 Behaviour
 ---------
-[TO BE IMPLEMENTED]
-
 We can tell LIME what it should do for each row it finds in our import file.
 
 **config.behaviour = ImportConfig.CreateAndUpdate**

@@ -7,6 +7,7 @@ from limeclient import (LimeClient,
                         OptionFieldMapping,
                         RelationMapping,
                         ImportConfigs,
+                        ImportConfig,
                         ImportJobs,
                         EntityTypes,
                         ImportFiles)
@@ -38,6 +39,7 @@ def main():
         config = ImportConfigs(c).create()
         config.entity = person
         config.importfile = f
+        config.behaviour = ImportConfig.OnlyUpdate
 
         print('Adding simple mapping for email...')
         email = SimpleFieldMapping(field=person.fields['email'],

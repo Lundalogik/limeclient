@@ -1,5 +1,6 @@
 from .limeclient import LimeClient
 from .importconfig import (ImportConfigs,
+                           ImportConfig,
                            SimpleFieldMapping,
                            OptionFieldMapping,
                            RelationMapping)

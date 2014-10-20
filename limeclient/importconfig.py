@@ -17,6 +17,10 @@ class ImportConfigs:
         return ImportConfig(json.loads(r.text), self.lime_client)
 
 class ImportConfig(HalDocument):
+    CreateAndUpdate = 'create_and_update'
+    OnlyUpdate = "only_update"
+    OnlyCreate = "only_create"
+
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
 
