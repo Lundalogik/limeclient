@@ -134,7 +134,7 @@ objects.
 Create a new object for each row in the import file. Don't try to match against
 existing objects in LIME.
 
-MAPPING
+Mapping
 -------
 For each row in the file to import, LIME needs to know what to do with the
 data. We tell LIME how to accomplish this by telling it how to map each column
