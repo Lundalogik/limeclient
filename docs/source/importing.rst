@@ -33,11 +33,13 @@ Importing a file
 ----------------
 Let's say we have the following file containing information about people we want to add to LIME:
 
-name;e-mail;ship;rank
-Ripley;ellen@nostromo.com;Nostromo;Warrant Officer
-Dallas;dallas@weyland.com;Nostromo;Captain
-Ash;ash@weyland.com;Nostromo;Science Officer
-...
+::
+
+    name;e-mail;ship;rank
+    Ripley;ellen@nostromo.com;Nostromo;Warrant Officer
+    Dallas;dallas@weyland.com;Nostromo;Captain
+    Ash;ash@weyland.com;Nostromo;Science Officer
+    ...
 
 We have a LIME database that contains information about employees and ships, and we've been tasked with importing this file in to LIME.
 
@@ -69,9 +71,11 @@ file we want to import.
 .. code-block:: python
 
     with client.login('user', 'pass') as c:
-        f = ImportFile(c).create('nostromo_crew.txt')
-        f.delimiter(';')
-        f.save()
+        with open('nostromo_crew.txt') as content:
+            f = ImportFile(c).create(filename='nostromo_crew.txt',
+                                     content=content)
+            f.delimiter(';')
+            f.save()
 
 Here we uploaded a file to LIME, which returns with a file object populated
 with default values. We then told LIME a little bit more about how it should
@@ -89,9 +93,11 @@ to load the 'crew' entity type:
 .. code-block:: python
 
     with client.login('user', 'pass') as c:
-        f = ImportFile(c).create('nostromo_crew.txt')
-        f.delimiter(';')
-        f.save()
+        with open('nostromo_crew.txt') as content:
+            f = ImportFile(c).create(filename='nostromo_crew.txt',
+                                     content=content)
+            f.delimiter(';')
+            f.save()
 
         crew = EntityTypes(c).get_by_name('crew')
 
@@ -102,18 +108,15 @@ With that we have enough information to start configuring our import:
 .. code-block:: python
 
     with client.login('user', 'pass') as c:
-        f = ImportFile(c).create('nostromo_crew.txt')
-        f.delimiter(';')
-        f.save()
+        with open('nostromo_crew.txt') as content:
+            f = ImportFile(c).create(filename='nostromo_crew.txt',
+                                     content=content)
+            f.delimiter(';')
+            f.save()
 
         crew = EntityTypes(c).get_by_name('crew')
 
         config = ImportConfigs(c).create(entity=crew, importfile=f)
-
-.. todo::
-
-    Support creating an import config with a linked file and entity type
-    directly in a POST.
 
 Behaviour
 ---------
@@ -267,4 +270,60 @@ Working with non-normative import documents
 ===========================================
 
 LIME is at the time of writing very strict about the structure of the file to
-import
+import. If we want to import documents from other sources that might not
+adhere to these rules, we need to transform the original data in to something
+that LIME accepts.
+
+Let's say we have the following file to import:
+
+::
+
+    name;company;email;phone;title
+    Erica Koss;Jacobi Inc;zoie51@donnelly.net;1-978-451-7502x7744;IT
+    Janna Roob;Beer, Green and Grant;giuseppe78@keebler.com;317.432.6066;Support
+    ...
+
+We have a single name column that contains both the first and last name.
+
+Let's say that the object type we're importing to has a firstname and lastname
+propery respectively.
+
+A (naively simple) solution to this is to add a transformation step before we
+upload our import file where we split the name column into a 'first name' and
+a 'last name' column:
+
+.. code-block:: python
+
+    NORMALIZED_HEADERS = 'first name;last name;company;email;phone;title'
+
+    def normalize(infile, outfile):
+        # Write headers to our normalized file
+        outfile.write(NORMALIZED_HEADERS + '\r\n')
+        for line, content in enumerate(infile):
+            # Ignore headers in original file
+            if line > 0:
+                row = content.split(';')  # Get original columns
+                name = row.pop(0)  # Extract 'name' column
+                first, last = name.split()  # Extract first and last names
+                row.insert(0, last)  # Reinsert last name in row
+                row.insert(0, first)  # Reinsert first name in row
+                outfile.write(';'.join(row) + '\r\n')
+        outfile.seek(0)
+
+    client = LimeClient(host='http://localhost:5000',
+                        database='lime_basic_v4_1')
+
+    with client.login(user='user', password='pass') as c:
+        with open('non-normative.txt', 'r', encoding='utf-8') as raw:
+            with tempfile.TemporaryFile('w+', encoding='utf-8') as fixed:
+                normalize(raw, fixed)
+                f = ImportFiles(c).create(filename='non-normative.txt',
+                                          content=fixed)
+                f.delimiter = ';'
+                f.save()
+
+    # ...
+
+Instead of just passing the original file directly to LIME, we create a
+temporary file that we fill with a normalized version with two columns for
+storing a name. We then pass this file to LIME instead.
