@@ -9,6 +9,11 @@ class HalDocument:
         self.lime_client = lime_client
         self._setup_properties()
 
+    @classmethod
+    def create_empty(Klass, lime_client):
+        EMPTY_HAL = {"_links": {}}
+        return Klass(EMPTY_HAL, lime_client)
+
     @property
     def self_url(self):
         return self.resource_link('self')['href']

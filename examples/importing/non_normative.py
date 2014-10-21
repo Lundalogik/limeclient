@@ -58,9 +58,7 @@ def main():
         person = EntityTypes(c).get_by_name('person')
 
         print('Creating import config...')
-        config = ImportConfigs(c).create()
-        config.entity = person
-        config.importfile = f
+        config = ImportConfigs(c).create(entity=person, importfile=f)
         config.behaviour = ImportConfig.CreateAndUpdate
 
         print('Adding simple mapping for email...')
