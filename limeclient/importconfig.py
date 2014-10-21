@@ -84,11 +84,11 @@ class OptionFieldMapping(collections.UserDict):
         return self._get_mapping('!')
 
     @default.setter
-    def default(self, val):
-        self._set_mapping('!', val)
+    def default(self, option):
+        self._set_mapping('!', option.id)
 
-    def map_value(self, column_val, field_val):
-        self._set_mapping(column_val, field_val)
+    def map_option(self, column_val, option):
+        self._set_mapping(column_val, option.id)
 
     def _get_mapping(self, key):
         return (self['settings']['mapping'][key]

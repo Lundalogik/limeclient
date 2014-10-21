@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import time
+import tempfile
 import argparse
 from limeclient import (LimeClient,
                         SimpleFieldMapping,
@@ -19,6 +20,22 @@ def parse_args():
     p.add_argument('--password', required=True)
     return p.parse_args()
 
+
+NORMALIZED_HEADERS = 'first name;last name;company;email;phone;title'
+
+
+def normalize(infile, outfile):
+    outfile.write(NORMALIZED_HEADERS + '\r\n')
+    for line, content in enumerate(infile):
+        if line > 0:
+            row = content.split(';')
+            name = row.pop(0)
+            first, last = name.split()
+            row.insert(0, last)
+            row.insert(0, first)
+            outfile.write(';'.join(row) + '\r\n')
+    outfile.seek(0)
+
 def main():
     args = parse_args()
 
@@ -28,11 +45,14 @@ def main():
 
     with client.login(user=args.user, password=args.password) as c:
         print('Uploading file...')
-        with open('import_person.txt', 'r', encoding='utf-8') as content:
-            f = ImportFiles(c).create(filename='import_person.txt',
-                                      content=content)
-            f.delimiter = ';'
-            f.save()
+
+        with open('non-normative.txt', 'r', encoding='utf-8') as raw:
+            with tempfile.TemporaryFile('w+', encoding='utf-8') as fixed:
+                normalize(raw, fixed)
+                f = ImportFiles(c).create(filename='non-normative.txt',
+                                          content=fixed)
+                f.delimiter = ';'
+                f.save()
 
         print('Getting person entity type info...')
         person = EntityTypes(c).get_by_name('person')
@@ -55,6 +75,12 @@ def main():
                                        key=False)
         config.add_mapping(firstname)
 
+        print('Adding simple mapping for last name...')
+        lastname = SimpleFieldMapping(field=person.fields['lastname'],
+                                       column='last name',
+                                       key=False)
+        config.add_mapping(lastname)
+
         print('Adding option mapping for position...')
         field = person.fields['position']
         position = OptionFieldMapping(field=field, column='title')
@@ -76,7 +102,7 @@ def main():
         print('Starting import job...')
         job = ImportJobs(c).create(config)
 
-        for i in range(10):
+        for i in range(30):
             time.sleep(1)
             job = job.refresh()
             print('Current job status: {}'.format(job.status))
@@ -88,3 +114,4 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+

@@ -68,4 +68,5 @@ class HalDocument:
             return set_property
 
         for prop in self.hal:
-            setattr(type(self), prop, property(getter(prop), setter(prop)))
+            if not hasattr(type(self), prop):
+                setattr(type(self), prop, property(getter(prop), setter(prop)))

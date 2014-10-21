@@ -48,9 +48,35 @@ class OptionField(HalDocument):
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
 
-    def option_id_for(self, localname):
-        return next(o['id'] for o in self.options
-                    if o['localname'] == localname)
+    def option_by_localname(self, localname):
+        return next(o for o in self.options if o.localname == localname)
+
+    def option_by_key(self, key):
+        return next(o for o in self.options if o.key == key)
+
+    def option_by_id(self, id):
+        return next(o for o in self.options if o.id == id)
+
+    @property
+    def options(self):
+        return [Option(o) for o in self.hal['options']]
+
+
+class Option:
+    def __init__(self, raw):
+        self.raw = raw
+
+    @property
+    def id(self):
+        return self.raw['id']
+
+    @property
+    def key(self):
+        return self.raw['key']
+
+    @property
+    def localname(self):
+        return self.raw['localname']
 
 
 def create_field(hal, lime_client):
