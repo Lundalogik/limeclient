@@ -1,9 +1,9 @@
-IMPORTING FILES
+Importing Files
 ===============
 
 The LIME Pro API supports importing simple text files. 
 
-FILE RECOMMENDATIONS
+File Recommendations
 --------------------
 
 The first line of the file should contain names for the columns in the rest of
@@ -11,7 +11,7 @@ the file.
 
 The file should preferably be encoded using UTF-8.
 
-CONCEPTS
+Concepts
 --------
 
 In order to start an import, we need to define three major components, an
@@ -50,6 +50,7 @@ If we're using the API-client this done by creating an instance of LimeClient
 and logging in:
 
 .. code-block:: python
+
     from limeclient
 
      client = LimeClient('http://localhost:2134', 'weyland_db')
@@ -66,6 +67,7 @@ file we want to import.
 
 
 .. code-block:: python
+
     with client.login('user', 'pass') as c:
         f = ImportFile(c).create('nostromo_crew.txt')
         f.delimiter(';')
@@ -75,7 +77,7 @@ Here we uploaded a file to LIME, which returns with a file object populated
 with default values. We then told LIME a little bit more about how it should
 interpret the file, and saved the new information on the server.
 
-RETRIEVING THE LIME DATA TYPE
+Retrieving the LIME data type
 -----------------------------
 The second piece of information we need before we can start configuring how to
 interpret the content of the file is an object that represents the data type
@@ -85,6 +87,7 @@ If the information in the file contains information about people we might want
 to load the 'crew' entity type:
 
 .. code-block:: python
+
     with client.login('user', 'pass') as c:
         f = ImportFile(c).create('nostromo_crew.txt')
         f.delimiter(';')
@@ -97,6 +100,7 @@ Creating an import configuration
 With that we have enough information to start configuring our import:
 
 .. code-block:: python
+
     with client.login('user', 'pass') as c:
         f = ImportFile(c).create('nostromo_crew.txt')
         f.delimiter(';')
@@ -139,6 +143,7 @@ Adding a simple field mapping
 In our example, the name and e-mail of the crew members are simple types, so we add simple field mappings for those. We also mark the name field as a key field, meaning that we will use this when determining if this row matches an existing object in LIME.
 
 .. code-block:: python
+
     with client.login('user', 'pass') as c:
         # ...
 
@@ -173,6 +178,7 @@ to one of the possible values of an option field in LIME.
 [HOW DO WE WANT TO MAP? ID/KEY? HOW TO FIND?]
 
 .. code:: python
+
     with client.login('user', 'pass') as c:
         # ...
 
@@ -197,6 +203,7 @@ Mapping relations
 Finally, we need to import the ship of each crew member in the file. 'Ship' is a separate table in the LIME database and we need to tell the import about this:
 
 .. code:: python
+
     with client.login('user', 'pass') as c:
         # ...
 
@@ -217,11 +224,12 @@ We ask the entity type for the relation to the ship type, we use that to get a h
 Now, we can save the import configuration and are ready to start the import.
 
 Starting an import job
-======================
+----------------------
 
 We can now start the import job:
 
 .. code-block:: python
+
    with client.login(user=args.user, password=args.password) as c:
        # ...
 
@@ -238,4 +246,3 @@ We can now start the import job:
               break
 
 This tells LIME to put the import job on a queue. We the proceed to poll the status of the job. If something goes wrong, the ten first errors will be printed to the console.
-
