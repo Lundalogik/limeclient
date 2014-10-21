@@ -108,8 +108,12 @@ With that we have enough information to start configuring our import:
 
         crew = EntityTypes(c).get_by_name('crew')
 
-        [TO BE IMPLEMENTED]
         config = ImportConfigs(c).create(entity=crew, importfile=f)
+
+.. todo::
+
+    Support creating an import config with a linked file and entity type
+    directly in a POST.
 
 Behaviour
 ---------
@@ -140,7 +144,10 @@ LIME, such as persons being related to companies.
 
 Adding a simple field mapping
 -----------------------------
-In our example, the name and e-mail of the crew members are simple types, so we add simple field mappings for those. We also mark the name field as a key field, meaning that we will use this when determining if this row matches an existing object in LIME.
+In our example, the name and e-mail of the crew members are simple types, so we
+add simple field mappings for those. We also mark the name field as a key
+field, meaning that we will use this when determining if this row matches an
+existing object in LIME.
 
 .. code-block:: python
 
@@ -175,7 +182,8 @@ an OptionFieldMapping to your import configuration.
 Within the OptionFieldMapping, you specify how a value in a column translates
 to one of the possible values of an option field in LIME.
 
-[HOW DO WE WANT TO MAP? ID/KEY? HOW TO FIND?]
+.. todo::
+    How do we want to specify mapping to option values? ID? Key?
 
 .. code:: python
 
@@ -191,7 +199,9 @@ to one of the possible values of an option field in LIME.
                            field_val=field.option_id_for('Warrant Officer'))
         config.add_field_mapping(position)
 
-In the example above we first say that any values for the 'rank' column that haven't been explicitly mapped, we should assume that the crew member is engineer. 
+In the example above we first say that any values for the 'rank' column that
+haven't been explicitly mapped, we should assume that the crew member is
+engineer.
 
 We then proceed to explicitly map the values for captain and warrant officer.
 
@@ -200,7 +210,9 @@ We then proceed to explicitly map the values for captain and warrant officer.
 Mapping relations
 -----------------
 
-Finally, we need to import the ship of each crew member in the file. 'Ship' is a separate table in the LIME database and we need to tell the import about this:
+Finally, we need to import the ship of each crew member in the file. 'Ship'
+is a separate table in the LIME database and we need to tell the import about
+this:
 
 .. code:: python
 
@@ -219,7 +231,9 @@ Finally, we need to import the ship of each crew member in the file. 'Ship' is a
 
         config.save()
 
-We ask the entity type for the relation to the ship type, we use that to get a hold of the actual ship type. We then tell the importer that the 'ship' column contains names of ships.
+We ask the entity type for the relation to the ship type, we use that to get a
+hold of the actual ship type. We then tell the importer that the 'ship' column
+contains names of ships.
 
 Now, we can save the import configuration and are ready to start the import.
 
@@ -245,4 +259,12 @@ We can now start the import job:
           if job.status != 'pending' and job.status != 'running':
               break
 
-This tells LIME to put the import job on a queue. We the proceed to poll the status of the job. If something goes wrong, the ten first errors will be printed to the console.
+This tells LIME to put the import job on a queue. We the proceed to poll the
+status of the job. If something goes wrong, the ten first errors will be
+printed to the console.
+
+Working with non-normative import documents
+===========================================
+
+LIME is at the time of writing very strict about the structure of the file to
+import
