@@ -310,17 +310,13 @@ a 'last name' column:
                 outfile.write(';'.join(row) + '\r\n')
         outfile.seek(0)
 
-    client = LimeClient(host='http://localhost:5000',
-                        database='lime_basic_v4_1')
-
-    with client.login(user='user', password='pass') as c:
-        with open('non-normative.txt', 'r', encoding='utf-8') as raw:
-            with tempfile.TemporaryFile('w+', encoding='utf-8') as fixed:
-                normalize(raw, fixed)
-                f = ImportFiles(c).create(filename='non-normative.txt',
-                                          content=fixed)
-                f.delimiter = ';'
-                f.save()
+    with open('non-normative.txt', 'r', encoding='utf-8') as raw:
+        with tempfile.TemporaryFile('w+', encoding='utf-8') as fixed:
+            normalize(raw, fixed)
+            f = ImportFiles(c).create(filename='non-normative.txt',
+                                      content=fixed)
+            f.delimiter = ';'
+            f.save()
 
     # ...
 
