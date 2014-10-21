@@ -28,9 +28,11 @@ def main():
 
     with client.login(user=args.user, password=args.password) as c:
         print('Uploading file...')
-        f = ImportFiles(c).create('import_person.txt')
-        f.delimiter = ';'
-        f.save()
+        with open('import_person.txt', 'r', encoding='utf-8') as content:
+            f = ImportFiles(c).create(filename='import_person.txt',
+                                      content=content)
+            f.delimiter = ';'
+            f.save()
 
         print('Getting person entity type info...')
         person = EntityTypes(c).get_by_name('person')

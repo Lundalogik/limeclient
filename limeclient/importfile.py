@@ -12,8 +12,8 @@ class ImportFiles:
     def __init__(self, lime_client):
         self.lime_client = lime_client
 
-    def create(self, filename):
-        files = {'file': (filename, open(filename, 'r'))}
+    def create(self, filename, content):
+        files = {'file': (filename, content)}
         r = self.lime_client.post('/importfiles/', files=files)
         if r.status_code != http.client.CREATED:
             raise LimeClientError('Failed to create import file', r.status_code,
