@@ -93,5 +93,4 @@ class Relation(HalDocument):
 
     @property
     def related(self):
-        # Should really be stored in '_links'
-        return EntityTypes(self.lime_client).get_by_url(self.related_entity)
+        return self.linked_resource('related_entity', EntityType)
