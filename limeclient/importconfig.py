@@ -8,9 +8,11 @@ class ImportConfigs:
     def __init__(self, lime_client):
         self.lime_client = lime_client
 
-    def create(self):
+    def create(self, entity, importfile):
         url = '/importconfigs/'
-        r = self.lime_client.post(url)
+        cfg = ImportConfig.create(self.lime_client, entity, importfile)
+
+        r = self.lime_client.post(url, data=json.dumps(cfg.hal))
         if r.status_code != http.client.CREATED:
             raise LimeClientError('Failed to create import config',
                                   r.status_code, r.text)
@@ -23,6 +25,13 @@ class ImportConfig(HalDocument):
 
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
+
+    @staticmethod
+    def create(lime_client, entity, importfile):
+        cfg = ImportConfig.create_empty(lime_client)
+        cfg.entity = entity
+        cfg.importfile = importfile
+        return cfg
 
     @property
     def entity(self):
@@ -46,11 +55,18 @@ class ImportConfig(HalDocument):
         else:
             self.field_mappings[mapping.field_url] = mapping.data
 
+    def validate(self):
+        return self.linked_resource('valid', ImportConfigStatus)
+
     def save(self):
         if '_embedded' in self.hal:
             del self.hal['_embedded']
         self.lime_client.put(self.self_url, data=json.dumps(self.hal))
 
+
+class ImportConfigStatus(HalDocument):
+    def __init__(self, hal, lime_client):
+        super().__init__(hal, lime_client)
 
 class SimpleFieldMapping(collections.UserDict):
     def __init__(self, column, field, key=False):

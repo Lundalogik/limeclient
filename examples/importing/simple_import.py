@@ -24,7 +24,7 @@ def main():
 
     client = LimeClient(host='http://localhost:5000',
                         database='lime_basic_v4_1',
-                        debug=False)
+                        debug=True)
 
     with client.login(user=args.user, password=args.password) as c:
         print('Uploading file...')
@@ -70,6 +70,10 @@ def main():
 
         print('Saving configuration...')
         config.save()
+
+        config_status = config.validate()
+        print(config_status.valid)
+        print(config_status.errors)
 
         print('Starting import job...')
         job = ImportJobs(c).create(config)

@@ -96,7 +96,8 @@ class LimeClient:
 
         if self.debug:
             print('===================================')
-            print('RESPONSE ({} {}):'.format(method, url))
+            print('RESPONSE ({} {}) (status: {}):'.format(method, url,
+                                                          r.status_code))
             print(r.text)
 
         return r
