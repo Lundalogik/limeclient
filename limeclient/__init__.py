@@ -4,7 +4,12 @@ from .importconfig import (ImportConfigs,
                            SimpleFieldMapping,
                            OptionFieldMapping,
                            RelationMapping)
-from .entitytypes import EntityTypes
+from .entitytypes import (EntityTypes,
+                          EntityType,
+                          SimpleField,
+                          OptionField,
+                          Option,
+                          Relation)
 from .importfile import (ImportFiles,
                          ImportFile,
                          ImportFileHeaders)

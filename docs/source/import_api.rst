@@ -11,6 +11,33 @@ LimeClient
 .. autoclass:: LimeClient
    :members:
 
+EntityTypes
+-----------
+
+.. autoclass:: EntityTypes
+   :members:
+
+.. autoclass:: EntityType
+   :members:
+
+Field Types
+~~~~~~~~~~~
+
+.. autoclass:: SimpleField
+   :members:
+
+.. autoclass:: OptionField
+   :members:
+
+.. autoclass:: Option
+   :members:
+
+Relations
+~~~~~~~~~
+
+.. autoclass:: Relation
+   :members:
+
 ImportFiles
 -----------
 
@@ -63,8 +90,14 @@ Import Configuration
 Mapping
 ~~~~~~~
 
+The following types can be passed to :meth:`ImportConfig.add_mapping` to
+define how columns in the import file should be mapped to fields in LIME Pro:
+
 .. autoclass:: SimpleFieldMapping
    :members:
 
 .. autoclass:: OptionFieldMapping
+   :members:
+
+.. autoclass:: RelationMapping
    :members:

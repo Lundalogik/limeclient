@@ -49,7 +49,6 @@ class ImportFile(HalDocument):
     """
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
-        import ipdb; ipdb.set_trace()
 
     @property
     def headers(self):

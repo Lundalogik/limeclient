@@ -185,9 +185,6 @@ an OptionFieldMapping to your import configuration.
 Within the OptionFieldMapping, you specify how a value in a column translates
 to one of the possible values of an option field in LIME.
 
-.. todo::
-    How do we want to specify mapping to option values? ID? Key?
-
 .. code:: python
 
     with client.login('user', 'pass') as c:

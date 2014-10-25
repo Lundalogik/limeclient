@@ -17,7 +17,8 @@ class ImportConfigs:
         """
         Create a new :class:`ImportConfig` instance in LIME.
 
-        :param entity: :class:`EntityType` instance that references what type of data to import
+        :param entity: :class:`EntityType` instance that references what type
+            of data to import
         :param importfile: :class:`ImportFile` instance to import
         """
 
@@ -35,7 +36,8 @@ class ImportConfig(HalDocument):
     Used for configuring an import.
 
     :param hal: representation of an import file as returned from LIME.
-    :param hal: lime_client :class:`LimeClient` to use for communication with LIME
+    :param hal: lime_client :class:`LimeClient` to use for communication
+        with LIME
     """
     CreateAndUpdate = 'create_and_update'
     OnlyUpdate = "only_update"
@@ -50,7 +52,8 @@ class ImportConfig(HalDocument):
         Create a new instance of :class:`ImportConfig`
 
         :param lime_client: a logged in :class:`LimeClient` instance
-        :param entity: :class:`EntityType` instance that references what type of data to import
+        :param entity: :class:`EntityType` instance that references what type
+            of data to import
         :param importfile: :class:`ImportFile` instance to import
         """
         cfg = ImportConfig.create_empty(lime_client)
@@ -79,7 +82,8 @@ class ImportConfig(HalDocument):
         Add information about how to map a column in the import file to data
         in LIME.
 
-        :param mapping: One of :class:`SimpleFieldMapping`, :class:`OptionFieldMapping`, or :class:`RelationMapping`.
+        :param mapping: One of :class:`SimpleFieldMapping`,
+            :class:`OptionFieldMapping`, or :class:`RelationMapping`.
         """
         if type(mapping) == RelationMapping:
             self.relation_mappings[mapping.relation_url] = mapping.data
@@ -88,7 +92,8 @@ class ImportConfig(HalDocument):
 
     def validate(self):
         """
-        Ask LIME to validate the import configuration. Returns an :class:`ImportConfigStatus` instance.
+        Ask LIME to validate the import configuration. Returns an
+            :class:`ImportConfigStatus` instance.
         """
         return self.linked_resource('valid', ImportConfigStatus)
 
@@ -111,7 +116,8 @@ class SimpleFieldMapping(collections.UserDict):
 
     :param column: Name of column in import file
     :param field: the field we want to map to
-    :param key: if `True`, the value of this column will be used to find existing objects in LIME Pro.
+    :param key: if `True`, the value of this column will be used to find
+        existing objects in LIME Pro.
     """
     def __init__(self, column, field, key=False):
         self._field = field
@@ -159,6 +165,12 @@ class OptionFieldMapping(collections.UserDict):
         self._set_mapping('!', option.id)
 
     def map_option(self, column_val, option):
+        """
+        Map a value for a column to an option for a field.
+
+        :param column_val: the name of the column in the import file
+        :param option: a :class:`Option` instance. The option value to map to.
+        """
         self._set_mapping(column_val, option.id)
 
     def _get_mapping(self, key):
@@ -171,6 +183,14 @@ class OptionFieldMapping(collections.UserDict):
 
 
 class RelationMapping(collections.UserDict):
+    """
+    Use the value in a column to find a related object in LIME Pro.
+
+    :param column: column that we want to map
+    :param relation: the :class:`Relation` that we want to map.
+    :param key_field: the field of the related type that we will match
+        against to find related objects.
+    """
     def __init__(self, column, relation, key_field):
         self._relation = relation
         self.data = {
