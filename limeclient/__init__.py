@@ -5,7 +5,9 @@ from .importconfig import (ImportConfigs,
                            OptionFieldMapping,
                            RelationMapping)
 from .entitytypes import EntityTypes
-from .importfile import ImportFiles
+from .importfile import (ImportFiles,
+                         ImportFile,
+                         ImportFileHeaders)
 
 from .importjob import ImportJobs
 

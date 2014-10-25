@@ -16,6 +16,12 @@ class LimeClientError(Exception):
         )
 
 class LimeClient:
+    """Handles all communication with LIME's API
+
+        :param host: name of host to connect to
+        :param database: name of database to logon to
+        :param debug: if `True`, print traffic to stdout. Defaults to `False`
+    """
     def __init__(self, host, database, debug=False):
         self.host = host
         self.session = None
@@ -23,6 +29,19 @@ class LimeClient:
         self.debug = debug
 
     def login(self, user=None, password=None):
+        """
+        Log in to LIME.
+
+        :class:`LimeClient` should be used as a context manager. That
+        way logging out and closing a session will be done automatically,
+        even if an error is encountered.
+
+        .. code-block:: python
+
+            client = LimeClient('localhost', 'mydatabase')
+            with client.login('user', 'pass') as c:
+                # do stuff
+        """
 
         data = {
             'database': self.database,

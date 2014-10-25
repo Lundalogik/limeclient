@@ -2,6 +2,7 @@
 import sys
 import time
 import argparse
+from os.path import join, abspath, dirname
 from limeclient import (LimeClient,
                         SimpleFieldMapping,
                         OptionFieldMapping,
@@ -28,7 +29,8 @@ def main():
 
     with client.login(user=args.user, password=args.password) as c:
         print('Uploading file...')
-        with open('import_person.txt', 'r', encoding='utf-8') as content:
+        path = join(script_dir(), 'import_person.txt')
+        with open(path, 'r', encoding='utf-8') as content:
             f = ImportFiles(c).create(filename='import_person.txt',
                                       content=content)
             f.delimiter = ';'
@@ -87,6 +89,9 @@ def main():
                 print(job.errors.errors[:10])
             if job.status != 'pending' and job.status != 'running':
                 break
+
+def script_dir():
+    return abspath(dirname(__file__))
 
 if __name__ == '__main__':
     sys.exit(main())

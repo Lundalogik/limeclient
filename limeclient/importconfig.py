@@ -5,10 +5,22 @@ import json
 from .limeclient import LimeClientError
 
 class ImportConfigs:
+    """
+    Manages creation of :class:`ImportConfig` instances in LIME
+
+    :param lime_client: a logged in :class:`LimeClient` instance
+    """
     def __init__(self, lime_client):
         self.lime_client = lime_client
 
     def create(self, entity, importfile):
+        """
+        Create a new :class:`ImportConfig` instance in LIME.
+
+        :param entity: :class:`EntityType` instance that references what type of data to import
+        :param importfile: :class:`ImportFile` instance to import
+        """
+
         url = '/importconfigs/'
         cfg = ImportConfig.create(self.lime_client, entity, importfile)
 
@@ -19,6 +31,12 @@ class ImportConfigs:
         return ImportConfig(json.loads(r.text), self.lime_client)
 
 class ImportConfig(HalDocument):
+    """
+    Used for configuring an import.
+
+    :param hal: representation of an import file as returned from LIME.
+    :param hal: lime_client :class:`LimeClient` to use for communication with LIME
+    """
     CreateAndUpdate = 'create_and_update'
     OnlyUpdate = "only_update"
     OnlyCreate = "only_create"
@@ -28,6 +46,13 @@ class ImportConfig(HalDocument):
 
     @staticmethod
     def create(lime_client, entity, importfile):
+        """
+        Create a new instance of :class:`ImportConfig`
+
+        :param lime_client: a logged in :class:`LimeClient` instance
+        :param entity: :class:`EntityType` instance that references what type of data to import
+        :param importfile: :class:`ImportFile` instance to import
+        """
         cfg = ImportConfig.create_empty(lime_client)
         cfg.entity = entity
         cfg.importfile = importfile
@@ -50,15 +75,27 @@ class ImportConfig(HalDocument):
         self.add_linked_resource('importfile', val)
 
     def add_mapping(self, mapping):
+        """
+        Add information about how to map a column in the import file to data
+        in LIME.
+
+        :param mapping: One of :class:`SimpleFieldMapping`, :class:`OptionFieldMapping`, or :class:`RelationMapping`.
+        """
         if type(mapping) == RelationMapping:
             self.relation_mappings[mapping.relation_url] = mapping.data
         else:
             self.field_mappings[mapping.field_url] = mapping.data
 
     def validate(self):
+        """
+        Ask LIME to validate the import configuration. Returns an :class:`ImportConfigStatus` instance.
+        """
         return self.linked_resource('valid', ImportConfigStatus)
 
     def save(self):
+        """
+        Save the import configuration in LIME.
+        """
         if '_embedded' in self.hal:
             del self.hal['_embedded']
         self.lime_client.put(self.self_url, data=json.dumps(self.hal))
@@ -69,6 +106,13 @@ class ImportConfigStatus(HalDocument):
         super().__init__(hal, lime_client)
 
 class SimpleFieldMapping(collections.UserDict):
+    """
+    Maps a column to a simple field on the object we want to import to.
+
+    :param column: Name of column in import file
+    :param field: the field we want to map to
+    :param key: if `True`, the value of this column will be used to find existing objects in LIME Pro.
+    """
     def __init__(self, column, field, key=False):
         self._field = field
         self.data = {
@@ -82,6 +126,13 @@ class SimpleFieldMapping(collections.UserDict):
 
 
 class OptionFieldMapping(collections.UserDict):
+    """
+    Maps a column to a simple field on the object we want to import to.
+
+    :param column: Name of column in import file
+    :param field: the field we want to map to
+    """
+
     def __init__(self, column, field):
         self._field = field
         self.data = {
@@ -97,6 +148,10 @@ class OptionFieldMapping(collections.UserDict):
 
     @property
     def default(self):
+        """
+        The value to give the field if none of the mappings apply for the
+        value in the column.
+        """
         return self._get_mapping('!')
 
     @default.setter
