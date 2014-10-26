@@ -143,7 +143,7 @@ define how columns in the import file should be mapped to fields in LIME Pro:
    :members:
 
 Import Jobs
-===========
+-----------
 
 .. autoclass:: ImportJobs
    :members:

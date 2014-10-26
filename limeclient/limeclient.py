@@ -21,12 +21,15 @@ class LimeClient:
         :param host: name of host to connect to
         :param database: name of database to logon to
         :param debug: if `True`, print traffic to stdout. Defaults to `False`
+        :param verify_ssl_cert: if `False`, ignore SSL certificate
+            verification. Defaults to `True`.
     """
-    def __init__(self, host, database, debug=False):
+    def __init__(self, host, database, debug=False, verify_ssl_cert=True):
         self.host = host
         self.session = None
         self.database = database
         self.debug = debug
+        self.verify_ssl_cert = verify_ssl_cert
 
     def login(self, user=None, password=None):
         """
@@ -105,6 +108,8 @@ class LimeClient:
             headers['sessionid'] = self.session['id']
 
         kwargs['headers'] = headers
+
+        kwargs['verify'] = self.verify_ssl_cert
 
         if self.debug and 'data' in kwargs:
             print('===================================')
