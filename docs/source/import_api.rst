@@ -20,14 +20,49 @@ EntityTypes
 .. autoclass:: EntityType
    :members:
 
+   .. attribute:: name
+
+   Name of entity type.
+
+   .. attribute:: is_system
+
+   `True` if this is a system type.
+
+ 
 Field Types
 ~~~~~~~~~~~
 
 .. autoclass:: SimpleField
    :members:
 
+   .. attribute:: label
+
+   .. attribute:: length
+
+   .. attribute:: localname
+
+   .. attribute:: name
+
+   .. attribute:: readonly
+
+   .. attribute:: required
+
+   .. attribute:: type
+
 .. autoclass:: OptionField
    :members:
+
+   .. attribute:: label
+
+   .. attribute:: localname
+
+   .. attribute:: name
+
+   .. attribute:: readonly
+
+   .. attribute:: required
+
+   .. attribute:: type
 
 .. autoclass:: Option
    :members:
@@ -37,6 +72,11 @@ Relations
 
 .. autoclass:: Relation
    :members:
+
+   .. attribute:: localname
+
+   .. attribute:: name
+
 
 ImportFiles
 -----------
@@ -100,4 +140,16 @@ define how columns in the import file should be mapped to fields in LIME Pro:
    :members:
 
 .. autoclass:: RelationMapping
+   :members:
+
+Import Jobs
+===========
+
+.. autoclass:: ImportJobs
+   :members:
+
+.. autoclass:: ImportJob
+   :members:
+
+.. autoclass:: ImportJobErrors
    :members:

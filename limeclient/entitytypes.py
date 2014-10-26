@@ -64,42 +64,66 @@ class EntityType(HalDocument):
 
 
 class SimpleField(HalDocument):
+    """
+    Represents a simple field type.
+    """
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
 
 
 class OptionField(HalDocument):
+    """
+    Represents an option field type.
+    """
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
 
     def option_by_localname(self, localname):
+        """
+        Retrieve an :class:`Option` value given its local name.
+        """
         return next(o for o in self.options if o.localname == localname)
 
     def option_by_key(self, key):
+        """
+        Retrieve an :class:`Option` value given its key.
+        """
         return next(o for o in self.options if o.key == key)
 
     def option_by_id(self, id):
+        """
+        Retrieve an :class:`Option` value given its id.
+        """
         return next(o for o in self.options if o.id == id)
 
     @property
     def options(self):
+        """
+        All possible :class:`Option` values for this field.
+        """
         return [Option(o) for o in self.hal['options']]
 
 
 class Option:
+    """
+    Represents a possible value for an :class:`OptionField`.
+    """
     def __init__(self, raw):
         self.raw = raw
 
     @property
     def id(self):
+        """Id of the option value"""
         return self.raw['id']
 
     @property
     def key(self):
+        """Key of the option value"""
         return self.raw['key']
 
     @property
     def localname(self):
+        """Local name of the option value"""
         return self.raw['localname']
 
 
@@ -112,9 +136,14 @@ def create_field(hal, lime_client):
 
 
 class Relation(HalDocument):
+    """
+    Represents a relation to another entity type in LIME Pro.
+    """
+
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
 
     @property
     def related(self):
+        """The related :class:`EntityType`"""
         return self.linked_resource('related_entity', EntityType)

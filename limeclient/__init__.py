@@ -14,7 +14,9 @@ from .importfile import (ImportFiles,
                          ImportFile,
                          ImportFileHeaders)
 
-from .importjob import ImportJobs
+from .importjob import (ImportJobs,
+                        ImportJob,
+                        ImportJobErrors)
 
 __all__ = [LimeClient, ImportConfigs, SimpleFieldMapping, OptionFieldMapping,
            RelationMapping, EntityTypes, ImportFiles, ImportJobs]
