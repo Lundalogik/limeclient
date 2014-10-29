@@ -32,7 +32,7 @@ class ImportJob(HalDocument):
 
     @staticmethod
     def create(config, lime_client):
-        job = HalDocument.create_empty(ImportJob, lime_client)
+        job = ImportJob.create_empty(lime_client)
         job.add_linked_resource('importconfig', config)
         return job
 
