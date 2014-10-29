@@ -168,7 +168,7 @@ class OptionFieldMapping(collections.UserDict):
         """
         Map a value for a column to an option for a field.
 
-        :param column_val: the name of the column in the import file
+        :param column_val: a value of the column in the import file
         :param option: a :class:`Option` instance. The option value to map to.
         """
         self._set_mapping(column_val, option.id)

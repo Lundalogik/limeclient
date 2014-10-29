@@ -53,7 +53,7 @@ and logging in:
 
 .. code-block:: python
 
-    from limeclient
+    from limeclient import LimeClient
 
      client = LimeClient('http://localhost:2134', 'weyland_db')
      with client.login('user', 'pass') as c:
@@ -72,9 +72,9 @@ file we want to import.
 
     with client.login('user', 'pass') as c:
         with open('nostromo_crew.txt') as content:
-            f = ImportFile(c).create(filename='nostromo_crew.txt',
-                                     content=content)
-            f.delimiter(';')
+            f = ImportFiles(c).create(filename='nostromo_crew.txt',
+                                      content=content)
+            f.delimiter = ';'
             f.save()
 
 Here we uploaded a file to LIME, which returns with a file object populated
@@ -94,7 +94,7 @@ to load the 'crew' entity type:
 
     with client.login('user', 'pass') as c:
         with open('nostromo_crew.txt') as content:
-            f = ImportFile(c).create(filename='nostromo_crew.txt',
+            f = ImportFiles(c).create(filename='nostromo_crew.txt',
                                      content=content)
             f.delimiter(';')
             f.save()
@@ -109,7 +109,7 @@ With that we have enough information to start configuring our import:
 
     with client.login('user', 'pass') as c:
         with open('nostromo_crew.txt') as content:
-            f = ImportFile(c).create(filename='nostromo_crew.txt',
+            f = ImportFiles(c).create(filename='nostromo_crew.txt',
                                      content=content)
             f.delimiter(';')
             f.save()
@@ -124,7 +124,7 @@ We can tell LIME what it should do for each row it finds in our import file.
 
 **config.behaviour = ImportConfig.CreateAndUpdate**
 Update existing objects if they match  what's in the file, and create new
-objects if nothing matches
+objects if nothing matches. This is the default value for a new :class:`ImportConfig`
 
 **config.behaviour = ImportConfig.OnlyUpdate**
 Only update objects that match what's in the import file. Don't create any new
@@ -164,12 +164,12 @@ existing object in LIME.
         name = SimpleFieldMapping(field=crew.fields['name'],
                                    column='name',
                                    key=False)
-        config.add_field_mapping(name)
+        config.add_mapping(name)
 
         email = SimpleFieldMapping(field=crew.fields['email'],
                                    column='e-mail',
                                    key=True)
-        config.add_field_mapping(email)
+        config.add_mapping(email)
 
 
 We can specify 'key=True' for multiple mappings. In that case all values must
@@ -197,15 +197,13 @@ to one of the possible values of an option field in LIME.
                            field_val=field.option_id_for('Captain'))
         position.map_value(column_val='Warrant Officer',
                            field_val=field.option_id_for('Warrant Officer'))
-        config.add_field_mapping(position)
+        config.add_mapping(position)
 
 In the example above we first say that any values for the 'rank' column that
 haven't been explicitly mapped, we should assume that the crew member is
 engineer.
 
 We then proceed to explicitly map the values for captain and warrant officer.
-
-[None should mean use default value of field]
 
 Mapping relations
 -----------------
@@ -223,7 +221,7 @@ this:
 
         # ...
 
-        relation = crew['ship']
+        relation = crew.relations['ship']
         ship = relation.related
         relation_mapping = RelationMapping(column='ship', relation=relation,
                                            key_field=ship.fields['name'])
