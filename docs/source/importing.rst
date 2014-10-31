@@ -257,7 +257,7 @@ We can now start the import job:
           if job.status != 'pending' and job.status != 'running':
               break
 
-This tells LIME to put the import job on a queue. We the proceed to poll the
+This tells LIME to put the import job on a queue. We then proceed to poll the
 status of the job. If something goes wrong, the ten first errors will be
 printed to the console.
 
