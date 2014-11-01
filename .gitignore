@@ -3,5 +3,5 @@ __pycache__/
 tags
 build/
 dist/
-limeclient.egg-info/
+*.egg*
 .idea

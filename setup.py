@@ -17,5 +17,11 @@ setup(
     packages=['limeclient'],
     include_package_data=True,
 
-    install_requires=['requests>=2.4.3']
+    install_requires=['requests>=2.4.3'],
+
+    tests_require=['nose>=1.3.3',
+                   'describe_it>=1.1.0',
+                   'responses>=0.3.0',
+                   'pyhamcrest>=1.8.1'],
+    test_suite='nose.collector'
 )

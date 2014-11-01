@@ -23,9 +23,10 @@ def parse_args():
 def main():
     args = parse_args()
 
-    client = LimeClient(host='http://localhost:5000',
+    client = LimeClient(host='https://localhost:5000',
                         database='lime_basic_v4_1',
-                        debug=True)
+                        debug=True,
+                        verify_ssl_cert=False)
 
     with client.login(user=args.user, password=args.password) as c:
         print('Uploading file...')
