@@ -10,7 +10,7 @@ from limeclient import (LimeClient,
                         ImportConfigs,
                         ImportConfig,
                         ImportJobs,
-                        EntityTypes,
+                        LimeTypes,
                         ImportFiles)
 
 
@@ -36,12 +36,12 @@ def main():
             f.delimiter = ';'
             f.save()
 
-        print('Getting person entity type info...')
-        person = EntityTypes(c).get_by_name('person')
+        print('Getting person lime type info...')
+        person = LimeTypes(c).get_by_name('person')
 
         print('Creating import config...')
-        config = ImportConfigs(c).create(entity=person, importfile=f)
-        config.behaviour = ImportConfig.CreateAndUpdate
+        config = ImportConfigs(c).create(lime_type=person, importfile=f)
+        config.behavior = ImportConfig.CreateAndUpdate
 
         print('Adding simple mapping for email...')
         email = SimpleFieldMapping(field=person.fields['email'],

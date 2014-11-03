@@ -13,17 +13,17 @@ class ImportConfigs:
     def __init__(self, lime_client):
         self.lime_client = lime_client
 
-    def create(self, entity, importfile):
+    def create(self, lime_type, importfile):
         """
         Create a new :class:`ImportConfig` instance in LIME.
 
-        :param entity: :class:`EntityType` instance that references what type
+        :param lime_type: :class:`LimeType` instance that references what type
             of data to import
         :param importfile: :class:`ImportFile` instance to import
         """
 
         url = '/importconfigs/'
-        cfg = ImportConfig.create(self.lime_client, entity, importfile)
+        cfg = ImportConfig.create(self.lime_client, lime_type, importfile)
 
         r = self.lime_client.post(url, data=json.dumps(cfg.hal))
         if r.status_code != http.client.CREATED:
@@ -47,26 +47,26 @@ class ImportConfig(HalDocument):
         super().__init__(hal, lime_client)
 
     @staticmethod
-    def create(lime_client, entity, importfile):
+    def create(lime_client, lime_type, importfile):
         """
         Create a new instance of :class:`ImportConfig`
 
         :param lime_client: a logged in :class:`LimeClient` instance
-        :param entity: :class:`EntityType` instance that references what type
+        :param lime_type: :class:`LimeType` instance that references what type
             of data to import
         :param importfile: :class:`ImportFile` instance to import
         """
         cfg = ImportConfig.create_empty(lime_client)
-        cfg.entity = entity
+        cfg.lime_type = lime_type
         cfg.importfile = importfile
         return cfg
 
     @property
-    def entity(self):
-        return self.linked_resource('entity', EntityType)
+    def lime_type(self):
+        return self.linked_resource('entity', LimeType)
 
-    @entity.setter
-    def entity(self, val):
+    @lime_type.setter
+    def lime_type(self, val):
         self.add_linked_resource('entity', val)
 
     @property

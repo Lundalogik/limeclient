@@ -11,18 +11,18 @@ LimeClient
 .. autoclass:: LimeClient
    :members:
 
-EntityTypes
+LimeTypes
 -----------
 
-.. autoclass:: EntityTypes
+.. autoclass:: LimeTypes
    :members:
 
-.. autoclass:: EntityType
+.. autoclass:: LimeType
    :members:
 
    .. attribute:: name
 
-   Name of entity type.
+   Name of lime type.
 
    .. attribute:: is_system
 
@@ -119,7 +119,7 @@ Import Configuration
 .. autoclass:: ImportConfig
    :members:
 
-   .. attribute:: behaviour
+   .. attribute:: behavior
 
    Determines how the import handles existing objects in LIME Pro. Can be one of the following:
 

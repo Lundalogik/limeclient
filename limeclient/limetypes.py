@@ -5,7 +5,7 @@ import json
 from .limeclient import LimeClientError
 
 
-class EntityTypes:
+class LimeTypes:
     """
     Retrieve type information about entities in LIME Pro.
 
@@ -16,9 +16,9 @@ class EntityTypes:
 
     def get_by_url(self, url):
         """
-        Retrieve a :class:`EntityType` given its url.
+        Retrieve a :class:`LimeType` given its url.
 
-        :param url: this is the url that uniquely identifies an entity type.
+        :param url: this is the url that uniquely identifies an lime type.
         """
         parsed = urlparse(url)
         if not parsed.query:
@@ -26,13 +26,13 @@ class EntityTypes:
 
         r = self.lime_client.get(url)
         if r.status_code != http.client.OK:
-            raise LimeClientError('Failed to get entity type {}'.format(url),
+            raise LimeClientError('Failed to get lime type {}'.format(url),
                                   r.status_code, r.text)
-        return EntityType(json.loads(r.text), self.lime_client)
+        return LimeType(json.loads(r.text), self.lime_client)
 
     def get_by_name(self, name):
         """
-        Retrieve a :class:`EntityType` given its name in LIME Pro.
+        Retrieve a :class:`LimeType` given its name in LIME Pro.
 
         :param name: name in LIME Pro (e.g. 'company')
         """
@@ -40,7 +40,7 @@ class EntityTypes:
         return self.get_by_url(url)
 
 
-class EntityType(HalDocument):
+class LimeType(HalDocument):
     """
     Represents a type of object in LIME Pro.
     """
@@ -50,7 +50,7 @@ class EntityType(HalDocument):
     @property
     def fields(self):
         """
-        Retrieve all fields for this entity type.
+        Retrieve all fields for this lime type.
         """
         return {f.name: f for f in self.linked_resource('fields',
                                                         create_field)}
@@ -58,7 +58,7 @@ class EntityType(HalDocument):
     @property
     def relations(self):
         """
-        Retrieve all relations (:class:`Relation`) for this entity type.
+        Retrieve all relations (:class:`Relation`) for this lime type.
         """
         return {r.name: r for r in self.linked_resource('relations', Relation)}
 
@@ -137,7 +137,7 @@ def create_field(hal, lime_client):
 
 class Relation(HalDocument):
     """
-    Represents a relation to another entity type in LIME Pro.
+    Represents a relation to another lime type in LIME Pro.
     """
 
     def __init__(self, hal, lime_client):
@@ -145,5 +145,5 @@ class Relation(HalDocument):
 
     @property
     def related(self):
-        """The related :class:`EntityType`"""
-        return self.linked_resource('related_entity', EntityType)
+        """The related :class:`LimeType`"""
+        return self.linked_resource('related_entity', LimeType)

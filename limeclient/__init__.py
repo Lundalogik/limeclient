@@ -4,8 +4,8 @@ from .importconfig import (ImportConfigs,
                            SimpleFieldMapping,
                            OptionFieldMapping,
                            RelationMapping)
-from .entitytypes import (EntityTypes,
-                          EntityType,
+from .limetypes import (LimeTypes,
+                          LimeType,
                           SimpleField,
                           OptionField,
                           Option,
@@ -19,4 +19,4 @@ from .importjob import (ImportJobs,
                         ImportJobErrors)
 
 __all__ = [LimeClient, ImportConfigs, SimpleFieldMapping, OptionFieldMapping,
-           RelationMapping, EntityTypes, ImportFiles, ImportJobs]
+           RelationMapping, LimeTypes, ImportFiles, ImportJobs]

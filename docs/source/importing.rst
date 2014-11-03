@@ -85,10 +85,10 @@ Retrieving the LIME data type
 -----------------------------
 The second piece of information we need before we can start configuring how to
 interpret the content of the file is an object that represents the data type
-in LIME. In the LIME API this is called an 'entity'.
+in LIME.
 
 If the information in the file contains information about people we might want
-to load the 'crew' entity type:
+to load the 'crew' :class:`~limeclient.LimeTypes`:
 
 .. code-block:: python
 
@@ -99,7 +99,7 @@ to load the 'crew' entity type:
             f.delimiter(';')
             f.save()
 
-        crew = EntityTypes(c).get_by_name('crew')
+        crew = LimeTypes(c).get_by_name('crew')
 
 Creating an import configuration
 --------------------------------
@@ -114,23 +114,24 @@ With that we have enough information to start configuring our import:
             f.delimiter(';')
             f.save()
 
-        crew = EntityTypes(c).get_by_name('crew')
+        crew = LimeTypes(c).get_by_name('crew')
 
-        config = ImportConfigs(c).create(entity=crew, importfile=f)
+        config = ImportConfigs(c).create(lime_type=crew, importfile=f)
 
-Behaviour
+Behavior
 ---------
 We can tell LIME what it should do for each row it finds in our import file.
 
-**config.behaviour = ImportConfig.CreateAndUpdate**
+**config.behavior = ImportConfig.CreateAndUpdate**
 Update existing objects if they match  what's in the file, and create new
-objects if nothing matches. This is the default value for a new :class:`ImportConfig`
+objects if nothing matches. This is the default value for a new
+:class:`~limeclient.ImportConfig`
 
-**config.behaviour = ImportConfig.OnlyUpdate**
+**config.behavior = ImportConfig.OnlyUpdate**
 Only update objects that match what's in the import file. Don't create any new
 objects.
 
-**config.behaviour = ImportConfig.OnlyCreate**
+**config.behavior = ImportConfig.OnlyCreate**
 Create a new object for each row in the import file. Don't try to match against
 existing objects in LIME.
 
@@ -157,9 +158,9 @@ existing object in LIME.
     with client.login('user', 'pass') as c:
         # ...
 
-        crew = EntityTypes(c).get_by_name('crew')
+        crew = LimeTypes(c).get_by_name('crew')
 
-        config = ImportConfigs(c).create(entity=crew, importfile=f)
+        config = ImportConfigs(c).create(lime_type=crew, importfile=f)
 
         name = SimpleFieldMapping(field=crew.fields['name'],
                                    column='name',
@@ -217,7 +218,7 @@ this:
     with client.login('user', 'pass') as c:
         # ...
 
-        crew = EntityTypes(c).get_by_name('crew')
+        crew = LimeTypes(c).get_by_name('crew')
 
         # ...
 
@@ -229,7 +230,7 @@ this:
 
         config.save()
 
-We ask the entity type for the relation to the ship type, we use that to get a
+We ask the lime type for the relation to the ship type, we use that to get a
 hold of the actual ship type. We then tell the importer that the 'ship' column
 contains names of ships.
 
