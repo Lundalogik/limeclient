@@ -3,6 +3,9 @@ from .haldocument import HalDocument
 import http.client
 import json
 from .limeclient import LimeClientError
+from .limetypes import LimeType
+from .importfile import ImportFile
+
 
 class ImportConfigs:
     """
@@ -30,6 +33,7 @@ class ImportConfigs:
             raise LimeClientError('Failed to create import config',
                                   r.status_code, r.text)
         return ImportConfig(json.loads(r.text), self.lime_client)
+
 
 class ImportConfig(HalDocument):
     """
@@ -109,6 +113,7 @@ class ImportConfig(HalDocument):
 class ImportConfigStatus(HalDocument):
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
+
 
 class SimpleFieldMapping(collections.UserDict):
     """
@@ -201,4 +206,3 @@ class RelationMapping(collections.UserDict):
     @property
     def relation_url(self):
         return self._relation.self_url
-

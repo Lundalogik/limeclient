@@ -23,7 +23,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    client = LimeClient(host='https://localhost:5000',
+    client = LimeClient(host='https://localhost',
                         database='lime_basic_v4_1',
                         debug=True,
                         verify_ssl_cert=False)

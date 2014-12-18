@@ -6,3 +6,4 @@ Sphinx==1.2.3
 docutils==0.12
 pyreadline==2.0
 requests==2.4.3
+flake==0.1.9

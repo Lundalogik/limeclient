@@ -1,20 +1,20 @@
 from .limeclient import LimeClient
-from .importconfig import (ImportConfigs,
+from .importconfig import (ImportConfigs,  # noqa
                            ImportConfig,
                            SimpleFieldMapping,
                            OptionFieldMapping,
                            RelationMapping)
-from .limetypes import (LimeTypes,
+from .limetypes import (LimeTypes,  # noqa
                           LimeType,
                           SimpleField,
                           OptionField,
                           Option,
                           Relation)
-from .importfile import (ImportFiles,
+from .importfile import (ImportFiles,  # noqa
                          ImportFile,
                          ImportFileHeaders)
 
-from .importjob import (ImportJobs,
+from .importjob import (ImportJobs,  # noqa
                         ImportJob,
                         ImportJobErrors)
 

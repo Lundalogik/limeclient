@@ -4,6 +4,8 @@ import http.client
 from .limeclient import LimeClientError
 
 EMPTY_HAL = {"_links": {}}
+
+
 class ImportJobs:
     def __init__(self, lime_client):
         self.lime_client = lime_client
@@ -47,9 +49,9 @@ class ImportJob(HalDocument):
     def has_errors(self):
         return self.has_link('errors')
 
+
 class ImportJobErrors(HalDocument):
     def __init__(self, hal, lime_client):
         # Fix: /importjobs/x/errors/ returns a naked array instead of HAL
         hal = {"errors": hal}
         super().__init__(hal, lime_client)
-

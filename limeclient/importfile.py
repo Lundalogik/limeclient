@@ -3,12 +3,14 @@ import json
 import http.client
 from .limeclient import LimeClientError
 
+
 class ImportFileHeaders(HalDocument):
     """
     Contains the headers of a parsed import file.
 
     :param hal: representation of an import file as returned from LIME.
-    :param hal: lime_client :class:`LimeClient` to use for communication with LIME
+    :param hal: lime_client :class:`LimeClient` to use for communication
+        with LIME
     """
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
@@ -40,12 +42,14 @@ class ImportFiles:
                                   r.text)
         return ImportFile(json.loads(r.text), self.lime_client)
 
+
 class ImportFile(HalDocument):
     """
     Represents a file to import to LIME.
 
     :param hal: representation of an import file as returned from LIME.
-    :param hal: lime_client :class:`LimeClient` to use for communication with LIME
+    :param hal: lime_client :class:`LimeClient` to use for communication with
+        LIME
     """
     def __init__(self, hal, lime_client):
         super().__init__(hal, lime_client)
@@ -56,4 +60,3 @@ class ImportFile(HalDocument):
 
     def save(self):
         self.lime_client.put(self.self_url, data=json.dumps(self.hal))
-

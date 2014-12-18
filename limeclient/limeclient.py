@@ -2,6 +2,7 @@ import json
 from urllib.parse import urljoin, urlparse
 import requests
 import http.client
+import urllib.parse as up
 
 
 class LimeClientError(Exception):
@@ -15,6 +16,7 @@ class LimeClientError(Exception):
             self.message, self.status_code, self.details
         )
 
+
 class LimeClient:
     """Handles all communication with LIME's API
 
@@ -24,7 +26,7 @@ class LimeClient:
         :param verify_ssl_cert: if `False`, ignore SSL certificate
             verification. Defaults to `True`.
     """
-    def __init__(self, host, database, debug=False, verify_ssl_cert=True):
+    def __init__(self, host, database=None, debug=False, verify_ssl_cert=True):
         self.host = host
         self.session = None
         self.database = database
@@ -56,6 +58,8 @@ class LimeClient:
         r = self.request('POST', self._sessions_url(), data=data)
         if r.status_code != http.client.CREATED:
             raise LimeClientError('Failed to login!', r.status_code, r.text)
+
+        self._update_host_if_redirected(r)
 
         self.session = json.loads(r.text)
         return self
@@ -97,7 +101,6 @@ class LimeClient:
 
         return urljoin(parsed.geturl(), path)
 
-
     def build_path(self, path):
         return '/api/v1/' + self.database + path
 
@@ -134,3 +137,16 @@ class LimeClient:
 
     def _sessions_url(self):
         return urljoin(self.host, '/api/v1/sessions/')
+
+    def _update_host_if_redirected(self, response):
+        """
+        If response contains info about a redirect, we'll use the new host
+        for subsequent requests.
+        """
+
+        if not len(response.history):
+            return
+
+        parsed = up.urlsplit(response.url)
+        self.host = up.urlunparse((parsed.scheme, parsed.netloc,
+                                   '', '', '', ''))
