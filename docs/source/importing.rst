@@ -48,19 +48,22 @@ We install the latest version of limeclient, create a module called weyland.py.
 Authenticating
 --------------
 First of all, we need to authenticate ourselves with the LIME Pro server.
-If we're using the API-client this done by creating an instance of LimeClient
+If we're using the API-client this done by creating an instance of :class:`~limeclient.LimeClient`
 and logging in:
 
 .. code-block:: python
 
     from limeclient import LimeClient
 
-     client = LimeClient('http://localhost:2134', 'weyland_db')
+     client = LimeClient('https://myserver:2134', 'weyland_db')
      with client.login('user', 'pass') as c:
          # Do stuff here...
 
 This will start a new session in LIME that will automatically be closed when
 program is finished.
+
+If you're importing data to a hosted LIME installation, you should not pass
+the database name argument.
 
 Uploading a file
 ----------------

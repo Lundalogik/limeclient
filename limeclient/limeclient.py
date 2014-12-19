@@ -21,7 +21,8 @@ class LimeClient:
     """Handles all communication with LIME's API
 
         :param host: name of host to connect to
-        :param database: name of database to logon to
+        :param database: name of database to logon to. Should not be
+            specified when logging on to a hosted LIME solution.
         :param debug: if `True`, print traffic to stdout. Defaults to `False`
         :param verify_ssl_cert: if `False`, ignore SSL certificate
             verification. Defaults to `True`.
