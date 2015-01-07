@@ -107,6 +107,7 @@ class LimeClient:
 
     def request(self, method, url, **kwargs):
         headers = kwargs.get('headers', {})
+        headers['Content-type'] = 'application/json'
 
         if self.session:
             headers['sessionid'] = self.session['id']
