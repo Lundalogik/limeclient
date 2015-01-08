@@ -49,6 +49,7 @@ class LimeClient:
                 # do stuff
         """
 
+        headers = {'Content-type': 'application/json'}
         data = {
             'database': self.database,
             'username': user,
@@ -56,13 +57,18 @@ class LimeClient:
         }
         data = json.dumps(data)
 
-        r = self.request('POST', self._sessions_url(), data=data)
+        r = self.request('POST', self._sessions_url(),
+                         **{'headers': headers, 'data': data})
         if r.status_code != http.client.CREATED:
             raise LimeClientError('Failed to login!', r.status_code, r.text)
 
         self._update_host_if_redirected(r)
 
         self.session = json.loads(r.text)
+
+        if not self.database:
+            self.database = self.session['database']
+
         return self
 
     def logout(self):
@@ -107,7 +113,6 @@ class LimeClient:
 
     def request(self, method, url, **kwargs):
         headers = kwargs.get('headers', {})
-        headers['Content-type'] = 'application/json'
 
         if self.session:
             headers['sessionid'] = self.session['id']

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='limeclient',
-    version='1.0.0',
+    version='1.0.2',
     description='Python client for the LIME Pro API',
     classifiers=[
         'Development Status :: 4 - Beta',
