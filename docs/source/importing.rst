@@ -184,9 +184,9 @@ Adding a mapping to an option field
 -----------------------------------
 
 You can map a column in the import file to an option field in LIME by adding
-an OptionFieldMapping to your import configuration.
+an :class:`~limeclient.OptionFieldMapping`  to your import configuration.
 
-Within the OptionFieldMapping, you specify how a value in a column translates
+Within the :class:`~limeclient.OptionFieldMapping`, you specify how a value in a column translates
 to one of the possible values of an option field in LIME.
 
 .. code:: python

@@ -151,5 +151,46 @@ Import Jobs
 .. autoclass:: ImportJob
    :members:
 
+   .. attribute:: created_time
+
+      Time when the job was created.
+
+   .. attribute:: started_time
+
+       Time when job was actually started.
+
+   .. attribute:: completed_time
+
+       Time when job was completed.
+
+   .. attribute:: created_count
+
+       Number of new items created.
+
+   .. attribute:: updated_count
+
+       Number of already existing items that where updated.
+
+   .. attribute:: errors_count
+
+       Number of errors encountered.
+
+   .. attribute:: status
+
+       Current status of the job. Can be one of 'pending',
+       'running', 'done', 'done_with_errors', or 'failed'
+
 .. autoclass:: ImportJobErrors
    :members:
+
+   .. attribute:: count
+
+      The number of errors encountered during the job.
+
+   .. attribute:: errors
+
+      A collection of all errors, grouped by rows in the imported file.
+
+      Example::
+
+          [{'row': 4, 'errors': ["Value of field 'name' is longer than the allowed 32 characters"]}]
