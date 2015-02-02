@@ -52,6 +52,4 @@ class ImportJob(HalDocument):
 
 class ImportJobErrors(HalDocument):
     def __init__(self, hal, lime_client):
-        # Fix: /importjobs/x/errors/ returns a naked array instead of HAL
-        hal = {"errors": hal}
         super().__init__(hal, lime_client)
