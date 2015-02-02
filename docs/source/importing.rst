@@ -196,11 +196,11 @@ to one of the possible values of an option field in LIME.
 
         field = crew.fields['rank']
         position = OptionFieldMapping(field=field, column='rank')
-        position.default = field.option_id_for('Engineer')
-        position.map_value(column_val='Captain',
-                           field_val=field.option_id_for('Captain'))
-        position.map_value(column_val='Warrant Officer',
-                           field_val=field.option_id_for('Warrant Officer'))
+        position.default = field.option_by_key('Engineer')
+        position.map_option(column_val='Captain',
+                            option=field.option_by_key('Captain'))
+        position.map_option(column_val='Warrant Officer',
+                            option=field.option_by_key('Warrant Officer'))
         config.add_mapping(position)
 
 In the example above we first say that any values for the 'rank' column that
