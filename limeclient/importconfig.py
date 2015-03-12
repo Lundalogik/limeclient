@@ -67,19 +67,19 @@ class ImportConfig(HalDocument):
 
     @property
     def lime_type(self):
-        return self.linked_resource('entity', LimeType)
+        return self._linked_resource('entity', LimeType)
 
     @lime_type.setter
     def lime_type(self, val):
-        self.add_linked_resource('entity', val)
+        self._add_linked_resource('entity', val)
 
     @property
     def importfile(self):
-        return self.linked_resource('importfile', ImportFile)
+        return self._linked_resource('importfile', ImportFile)
 
     @importfile.setter
     def importfile(self, val):
-        self.add_linked_resource('importfile', val)
+        self._add_linked_resource('importfile', val)
 
     def add_mapping(self, mapping):
         """
@@ -90,16 +90,16 @@ class ImportConfig(HalDocument):
             :class:`OptionFieldMapping`, or :class:`RelationMapping`.
         """
         if type(mapping) == RelationMapping:
-            self.relation_mappings[mapping.relation_url] = mapping.data
+            self._relation_mappings[mapping.relation_url] = mapping.data
         else:
-            self.field_mappings[mapping.field_url] = mapping.data
+            self._field_mappings[mapping.field_url] = mapping.data
 
     def validate(self):
         """
         Ask LIME to validate the import configuration. Returns an
             :class:`ImportConfigStatus` instance.
         """
-        return self.linked_resource('valid', ImportConfigStatus)
+        return self._linked_resource('valid', ImportConfigStatus)
 
     def save(self):
         """

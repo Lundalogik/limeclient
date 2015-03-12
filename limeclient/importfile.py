@@ -56,7 +56,7 @@ class ImportFile(HalDocument):
 
     @property
     def headers(self):
-        return self.linked_resource('headers', ImportFileHeaders)
+        return self._linked_resource('headers', ImportFileHeaders)
 
     def save(self):
         self.lime_client.put(self.self_url, data=json.dumps(self.hal))

@@ -66,7 +66,7 @@ class LimeClient:
 
         self.session = json.loads(r.text)
 
-        if not self.database:
+        if not self.database and 'database' in self.session:
             self.database = self.session['database']
 
         return self

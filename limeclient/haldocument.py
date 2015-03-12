@@ -16,36 +16,42 @@ class HalDocument:
 
     @property
     def self_url(self):
-        return self.resource_link('self')['href']
+        return self._resource_link('self')['href']
 
-    def linked_resource(self, link_name, resource_type):
-        link = self.resource_link(link_name)
+    def _get_properties(self):
+        return {k: v for k, v in self.hal.items() if not k.startswith('_')}
+
+    def _linked_resource(self, link_name, resource_type):
+        link = self._resource_link(link_name)
 
         if isinstance(link, list):
             return (self._get_resource(l, resource_type) for l in link)
 
         return self._get_resource(link, resource_type)
 
-    def add_linked_resource(self, link_name, resource):
-        self.hal['_links'][link_name] = resource.resource_link('self')
-        self.embed(resource)
+    def _add_linked_resource(self, link_name, resource):
+        self.hal['_links'][link_name] = resource._resource_link('self')
+        self._embed(resource)
 
-    def embed(self, resource):
+    def _embed(self, resource):
         self.hal['_embedded'] = self.hal.get('_embedded') or {}
         self.hal['_embedded'][resource.self_url] = resource.hal
 
-    def has_embedded(self, url):
+    def _has_embedded(self, url):
         return '_embedded' in self.hal and url in self.hal['_embedded']
 
-    def has_link(self, linkname):
+    def _has_link(self, linkname):
         return '_links' in self.hal and linkname in self.hal['_links']
 
-    def resource_link(self, link_name):
+    def _get_resource_link_href(self, link_name):
+        return self._resource_link(link_name)['href']
+
+    def _resource_link(self, link_name):
         return self.hal['_links'][link_name]
 
     def _get_resource(self, link, resource_type):
         url = link['href']
-        if self.has_embedded(url):
+        if self._has_embedded(url):
             return resource_type(self.hal['_embedded'][url], self.lime_client)
 
         return self._load_resource(url, resource_type)

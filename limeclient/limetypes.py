@@ -6,6 +6,7 @@ from .limeclient import LimeClientError
 
 
 class LimeTypes:
+    cache = {}
     """
     Retrieve type information about entities in LIME Pro.
 
@@ -24,11 +25,18 @@ class LimeTypes:
         if not parsed.query:
             url += '?_embed=all'
 
+        url = self.lime_client.normalize(url)
+
+        if url in LimeTypes.cache and LimeTypes.cache[url].lime_client.session:
+            return LimeTypes.cache[url]
+
         r = self.lime_client.get(url)
         if r.status_code != http.client.OK:
             raise LimeClientError('Failed to get lime type {}'.format(url),
                                   r.status_code, r.text)
-        return LimeType(json.loads(r.text), self.lime_client)
+        LimeTypes.cache[url] = LimeType(json.loads(r.text), self.lime_client)
+
+        return LimeTypes.cache[url]
 
     def get_by_name(self, name):
         """
@@ -52,15 +60,16 @@ class LimeType(HalDocument):
         """
         Retrieve all fields for this lime type.
         """
-        return {f.name: f for f in self.linked_resource('fields',
-                                                        create_field)}
+        return {f.name: f for f in self._linked_resource('fields',
+                                                         create_field)}
 
     @property
     def relations(self):
         """
         Retrieve all relations (:class:`Relation`) for this lime type.
         """
-        return {r.name: r for r in self.linked_resource('relations', Relation)}
+        return {r.name: r for r in self._linked_resource('relations',
+                                                         Relation)}
 
 
 class SimpleField(HalDocument):

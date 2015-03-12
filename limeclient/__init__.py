@@ -18,5 +18,8 @@ from .importjob import (ImportJobs,  # noqa
                         ImportJob,
                         ImportJobErrors)
 
+from .limeobjects import (LimeObjects,  # noqa
+                            LimeObject)
+
 __all__ = [LimeClient, ImportConfigs, SimpleFieldMapping, OptionFieldMapping,
            RelationMapping, LimeTypes, ImportFiles, ImportJobs]
