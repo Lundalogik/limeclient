@@ -78,7 +78,7 @@ person_metadata = {
             {'href': '/api/v1/db/metadata/entities/person/fields/company/'},
             {'href': '/api/v1/db/metadata/entities/person/fields/position/'},
             {'href': '/api/v1/db/metadata/entities/person/fields/name/'},
-            ],
+        ],
         'relations': [
             {'href': '/api/v1/db/metadata/entities/person/relations/company/'},
             ],
@@ -120,7 +120,16 @@ company_metadata = {
                 {'href':
                  '/api/v1/db/metadata/entities/company/fields/name/'},
                 {'href':
-                 '/api/v1/db/metadata/entities/company/fields/buyingstatus/'}],
+                 '/api/v1/db/metadata/entities/company/fields/buyingstatus/'},
+                {'href':
+                 '/api/v1/db/metadata/entities/company/fields/created_by/'},
+                {'href':
+                 '/api/v1/db/metadata/entities/company/fields/created_time/'},
+                {'href':
+                 '/api/v1/db/metadata/entities/company/fields/modified_by/'},
+                {'href':
+                 '/api/v1/db/metadata/entities/company/fields/modified_time/'}
+            ],
             'relations': [
                 {'href':
                  '/api/v1/db/metadata/entities/company/relations/person/'}],
@@ -131,6 +140,34 @@ company_metadata = {
         'localname': 'Företag',
         'is_system': False,
         'name': 'company'
+    },
+    '/api/v1/db/metadata/entities/company/fields/created_by/': {
+        'name': 'created_by',
+        'readonly': True,
+        'localname': 'Skapad av (System)',
+        'required': False,
+        'type': 'system'
+    },
+    '/api/v1/db/metadata/entities/company/fields/created_time/': {
+        'name': 'created_time',
+        'readonly': True,
+        'localname': 'Skapad (System)',
+        'required': False,
+        'type': 'system'
+    },
+    '/api/v1/db/metadata/entities/company/fields/modified_by/': {
+        'name': 'modified_by',
+        'readonly': True,
+        'localname': 'Senast uppdaterad av (System)',
+        'required': False,
+        'type': 'system'
+    },
+    '/api/v1/db/metadata/entities/company/fields/modified_time/': {
+        'name': 'modified_time',
+        'readonly': True,
+        'localname': 'Senast uppdaterad (System)',
+        'required': False,
+        'type': 'system'
     },
     '/api/v1/db/metadata/entities/company/fields/id/': {
         'required': False,
@@ -212,6 +249,11 @@ lime_object_company = {
             'href': '/api/v1/db/metadata/entities/company/'
         },
     },
+    'id': 1001,
+    'created_time': '2012-11-13T00:00:00',
+    'created_by': 201,
+    'modified_time': '2012-11-13T00:00:00',
+    'modified_by': 201,
     'name': 'Lundalogik AB',
     'buyingstatus': 'prospect'
 }

@@ -47,7 +47,7 @@ class LimeObject:
     def __init__(self, hal, lime_client):
         self.lime_client = lime_client
         self.hal = hal
-        self._fields = None
+        self._fields = {}
         self._lime_type = None
 
     @property
@@ -55,12 +55,10 @@ class LimeObject:
         """
         Retrieve all fields for this lime object
         """
-
         if not self._fields:
             self._fields = {
                 f.name: self._create_value(f) for f
                 in self.lime_type.fields.values()
-                if f.name in self.hal
             }
 
         return self._fields
