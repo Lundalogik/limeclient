@@ -30,8 +30,8 @@ class Limeviews:
 
     def get_parsed(self, limetype, viewtype):
         url = self.limeview_url.format(limetype, viewtype)
-        res = self.lim_client.get(url=url,
-                                  headers={'Accept': 'application/hal+json'})
+        res = self.lime_client.get(url=url,
+                                   headers={'Accept': 'application/hal+json'})
         if res.status_code != http.client.OK:
             raise LimeClientError('Failed to get lime view {}'.format(url),
                                   res.status_code, res.text)
