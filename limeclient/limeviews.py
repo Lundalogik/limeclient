@@ -29,7 +29,8 @@ class Limeviews:
             return r.status_code
 
     def get_parsed(self, limetype, viewtype):
-        return self.limeview_crud('get', limetype, viewtype)
+        return self.limeview_crud('get', limetype, viewtype,
+                                  headers={'Accept': 'application/hal+json'})
 
     def get(self, limetype, viewtype):
         return self.limeview_crud('get', limetype, viewtype,
