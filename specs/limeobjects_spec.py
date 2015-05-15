@@ -2,8 +2,7 @@ import responses
 import json
 import io
 from describe_it import describe, it, Fixture, before_each, after_each
-from .haldocs import (respond_get_limeobject_company,
-                      respond_get_metadata_company)
+import specs.fixtures as ft
 from io import StringIO
 from limeclient import (LimeClient,
                         LimeObjects,
@@ -34,8 +33,8 @@ def limeobjects():
 
         @before_each
         def setup_limeobjects_get():
-            respond_get_metadata_company()
-            respond_get_limeobject_company()
+            ft.respond_get_metadata_company()
+            ft.respond_get_limeobject_company()
 
             f.lime_client = LimeClient(host='http://example.com/',
                                        database='db')
@@ -50,8 +49,8 @@ def limeobjects():
 
         @before_each
         def setup_limeobjects_props():
-            respond_get_metadata_company()
-            respond_get_limeobject_company()
+            ft.respond_get_metadata_company()
+            ft.respond_get_limeobject_company()
 
             f.lime_client = LimeClient(host='http://example.com/',
                                        database='db')

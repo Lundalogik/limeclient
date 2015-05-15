@@ -2,11 +2,7 @@ import responses
 import json
 import io
 from describe_it import describe, it, Fixture, before_each, after_each
-from .haldocs import (respond_post_config,
-                      respond_post_importfile,
-                      respond_put_importfile,
-                      respond_get_headers,
-                      respond_get_person)
+import specs.fixtures as ft
 from io import StringIO
 from limeclient import (LimeClient,
                         ImportConfigs,
@@ -38,9 +34,9 @@ def limeclient():
 
         @before_each
         def setup():
-            respond_post_importfile()
-            respond_put_importfile()
-            respond_get_headers()
+            ft.respond_post_importfile()
+            ft.respond_put_importfile()
+            ft.respond_get_headers()
 
             f.lime_client = LimeClient(host='http://example.com/',
                                        database='db')
@@ -80,9 +76,9 @@ def limeclient():
 
         @before_each
         def setup():
-            respond_post_config()
-            respond_get_person()
-            respond_post_importfile()
+            ft.respond_post_config()
+            ft.respond_get_person()
+            ft.respond_post_importfile()
 
             f.lime_client = LimeClient(host='http://example.com/',
                                        database='db')

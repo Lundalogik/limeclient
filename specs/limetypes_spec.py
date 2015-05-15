@@ -1,7 +1,6 @@
 import responses
 from describe_it import describe, it, Fixture, before_each, after_each
-from .haldocs import (respond_post_session,
-                      respond_get_metadata_company)
+import specs.fixtures as ft
 from limeclient import (LimeClient,
                         LimeTypes)
 from hamcrest import (assert_that,
@@ -28,8 +27,8 @@ def limetypes():
 
         @before_each
         def setup_limetypes_get():
-            respond_post_session()
-            respond_get_metadata_company()
+            ft.respond_post_session()
+            ft.respond_get_metadata_company()
 
             f.lime_client = LimeClient(host='http://example.com/',
                                        database='db')
@@ -50,8 +49,8 @@ def limetypes():
     def limetypes_props():
         @before_each
         def setup_limetypes_props():
-            respond_post_session()
-            respond_get_metadata_company()
+            ft.respond_post_session()
+            ft.respond_get_metadata_company()
 
         @it
         def props_of_company():
