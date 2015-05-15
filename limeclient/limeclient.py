@@ -33,6 +33,7 @@ class LimeClient:
         self.database = database
         self.debug = debug
         self.verify_ssl_cert = verify_ssl_cert
+        self._request = requests.request
 
     def login(self, user=None, password=None):
         """
@@ -78,16 +79,25 @@ class LimeClient:
 
         self.session = None
 
-    def get(self, url, **kwargs):
+    def get(self, url, accept='application/hal+json', **kwargs):
         url = self.normalize(url)
+        headers = kwargs.get('headers', {})
+        headers['Accept'] = accept
+        kwargs['headers'] = headers
         return self.request('GET', url, **kwargs)
 
-    def post(self, url, **kwargs):
+    def post(self, url, content_type='application/json', **kwargs):
         url = self.normalize(url)
+        headers = kwargs.get('headers', {})
+        headers['Content-Type'] = content_type
+        kwargs['headers'] = headers
         return self.request('POST', url, **kwargs)
 
-    def put(self, url, **kwargs):
+    def put(self, url, content_type='application/json', **kwargs):
         url = self.normalize(url)
+        headers = kwargs.get('headers', {})
+        headers['Content-Type'] = content_type
+        kwargs['headers'] = headers
         return self.request('PUT', url, **kwargs)
 
     def delete(self, url, **kwargs):
@@ -126,7 +136,7 @@ class LimeClient:
             print('REQUEST ({} {}):'.format(method, url))
             print(kwargs['data'])
 
-        r = requests.request(method, url, **kwargs)
+        r = self._request(method, url, **kwargs)
 
         if self.debug:
             print('===================================')

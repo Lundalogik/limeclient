@@ -7,7 +7,7 @@ from hamcrest import (assert_that,
                       equal_to)
 import limeclient as lc
 import requests
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 
 @describe
@@ -28,10 +28,10 @@ def hosting_login():
     def updates_the_host_when_redirected():
         mock_request = _build_redirecting_fake_request()
 
-        with patch('requests.request', mock_request):
-            f.lime_client.login(user='kalle', password='pass')
-            assert_that(f.lime_client.host,
-                        equal_to('https://myapp.example.com'))
+        f.lime_client._request = mock_request
+        f.lime_client.login(user='kalle', password='pass')
+        assert_that(f.lime_client.host,
+                    equal_to('https://myapp.example.com'))
 
     def _build_redirecting_fake_request():
         class Response:
