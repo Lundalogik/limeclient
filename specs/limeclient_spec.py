@@ -1,7 +1,8 @@
 from describe_it import describe, it, Fixture, before_each, after_each
 from hamcrest import assert_that, equal_to
 from limeclient import LimeClient
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, create_autospec
+import requests
 
 @describe
 def limeclient():
@@ -10,7 +11,8 @@ def limeclient():
     @before_each
     def setup():
         f.client = LimeClient('http://example.org/', database='database')
-        f.client._request = MagicMock()
+        f.response = create_autospec(requests.Response)
+        f.client._request = MagicMock(return_value=f.response)
 
     @it
     def uses_the_correct_method_for_get():
@@ -51,6 +53,11 @@ def limeclient():
     def puts_data_with_specified_content_type():
         f.client.put('/limeview/company/card/', content_type='text/plain')
         assert_that(requested_header('Content-Type'), equal_to('text/plain'))
+
+    @it
+    def raises_errors_from_server():
+        f.client.request('GET', 'http://example.com/api/v1/and/so/on/')
+        f.response.raise_for_status.assert_called_with()
 
     def requested_header(header):
         _, kwargs = f.client._request.call_args

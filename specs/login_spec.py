@@ -35,7 +35,8 @@ def hosting_login():
 
     def _build_redirecting_fake_request():
         class Response:
-            pass
+            def raise_for_status(self):
+                pass
 
         # First, let hosting redirect our request to create a new session
         hosting_response = Response()

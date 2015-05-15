@@ -144,6 +144,11 @@ class LimeClient:
                                                           r.status_code))
             print(r.text)
 
+        #
+        # If an error occured, raise the corresponsing HTTPError
+        #
+        r.raise_for_status()
+
         return r
 
     def __enter__(self):
