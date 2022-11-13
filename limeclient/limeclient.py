@@ -34,6 +34,10 @@ class LimeClient:
         self.debug = debug
         self.verify_ssl_cert = verify_ssl_cert
         self._request = requests.request
+        self._api_key = None
+
+    def authenticate_with_api_key(self, api_key: str):
+        self._api_key = api_key
 
     def login(self, user=None, password=None):
         """
@@ -124,7 +128,9 @@ class LimeClient:
     def request(self, method, url, **kwargs):
         headers = kwargs.get('headers', {})
 
-        if self.session:
+        if self._api_key:
+            headers['x-api-key'] = self._api_key
+        elif self.session:
             headers['sessionid'] = self.session['id']
 
         kwargs['headers'] = headers
