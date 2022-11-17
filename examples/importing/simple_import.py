@@ -20,6 +20,7 @@ def parse_args():
     p.add_argument('--password', required=True)
     return p.parse_args()
 
+
 def main():
     args = parse_args()
 
@@ -60,8 +61,9 @@ def main():
         field = person.fields['position']
         position = OptionFieldMapping(field=field, column='title')
         position.default = field.option_by_localname('VD')
-        position.map_option(column_val='IT',
-                           option=field.option_by_localname('IT-chef'))
+        position.map_option(
+            column_val='IT', option=field.option_by_localname('IT-chef')
+        )
         config.add_mapping(position)
 
         print('Adding a relation to company...')
@@ -91,8 +93,10 @@ def main():
             if job.status != 'pending' and job.status != 'running':
                 break
 
+
 def script_dir():
     return abspath(dirname(__file__))
+
 
 if __name__ == '__main__':
     sys.exit(main())

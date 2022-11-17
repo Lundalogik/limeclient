@@ -155,4 +155,4 @@ class Relation(HalDocument):
     @property
     def related(self):
         """The related :class:`LimeType`"""
-        return self.linked_resource('related_entity', LimeType)
+        return self._linked_resource('related_entity', LimeType)
