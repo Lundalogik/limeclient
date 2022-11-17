@@ -35,7 +35,9 @@ class ImportFiles:
         :param content: a file object containing the data to import
         """
         files = {'file': (filename, content)}
-        r = self.lime_client.post('/importfiles/', files=files)
+        r = self.lime_client.post(
+            '/importfiles/', content_type=None, files=files
+        )
         if r.status_code != http.client.CREATED:
             raise LimeClientError('Failed to create import file',
                                   r.status_code,

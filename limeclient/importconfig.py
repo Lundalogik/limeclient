@@ -90,9 +90,9 @@ class ImportConfig(HalDocument):
             :class:`OptionFieldMapping`, or :class:`RelationMapping`.
         """
         if type(mapping) == RelationMapping:
-            self._relation_mappings[mapping.relation_url] = mapping.data
+            self.relation_mappings[mapping.relation_url] = mapping.data
         else:
-            self._field_mappings[mapping.field_url] = mapping.data
+            self.field_mappings[mapping.field_url] = mapping.data
 
     def validate(self):
         """
