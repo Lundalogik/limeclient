@@ -58,7 +58,7 @@ class ImportJob(HalDocument):
     @staticmethod
     def create(config, lime_client):
         job = ImportJob.create_empty(lime_client)
-        job.add_linked_resource('importconfig', config)
+        job._add_linked_resource('importconfig', config)
         return job
 
     def refresh(self):
@@ -73,14 +73,14 @@ class ImportJob(HalDocument):
         Retrieve a :class:`ImportJobErrors` that contains all errors for this
         job
         """
-        return self.linked_resource('errors', ImportJobErrors)
+        return self._linked_resource('errors', ImportJobErrors)
 
     @property
     def has_errors(self):
         """
         Determine if this job has encountered any errors.
         """
-        return self.has_link('errors')
+        return self._has_link('errors')
 
 
 class ImportJobErrors(HalDocument):

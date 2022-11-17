@@ -214,7 +214,11 @@ company_metadata = {
         'defaultvalue': {'key': 'none', 'localname': '', 'id': 108001},
         'options': [
             {'key': 'none', 'localname': '', 'id': 108001},
-            {'key': 'notinterested', 'localname': 'Ej intressant', 'id': 108401},
+            {
+                'key': 'notinterested',
+                'localname': 'Ej intressant',
+                'id': 108401
+            },
             {'key': 'prospect', 'localname': 'Prospekt', 'id': 108501},
             {'key': 'active', 'localname': 'Aktiv kund', 'id': 108601},
             {'key': 'excustomer', 'localname': 'Före detta kund', 'id': 108701}
