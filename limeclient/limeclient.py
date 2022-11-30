@@ -111,7 +111,7 @@ class LimeClient:
     def normalize(self, url):
         parsed = urlparse(url)
 
-        path = (parsed.path if parsed.path.startswith('/api/v1/')
+        path = (parsed.path if '/api/v1/' in parsed.path
                 else self.build_path(parsed.path))
 
         if parsed.query:
